@@ -1,5 +1,6 @@
 package ir.ariwuh.plugin.ravensmp;
 
+import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
 import ir.ariwuh.plugin.ravensmp.manager.TeamInvitationManager;
 import ir.ariwuh.plugin.ravensmp.manager.TeamManager;
 import lombok.Getter;
@@ -30,6 +31,12 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
+
+        registerCommands();
+    }
+
+    private void registerCommands() {
+        new TeamCommand(this);
     }
 
 }
