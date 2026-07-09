@@ -23,6 +23,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         this.teamManager = new TeamManager();
         this.teamInvitationManager = new TeamInvitationManager(this, this.teamManager);
+
+        registerCommands();
     }
 
     @Override
@@ -31,8 +33,6 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
-
-        registerCommands();
     }
 
     private void registerCommands() {
