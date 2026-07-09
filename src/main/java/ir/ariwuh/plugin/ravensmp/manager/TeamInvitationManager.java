@@ -3,6 +3,7 @@ package ir.ariwuh.plugin.ravensmp.manager;
 import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamInvitationStatus;
+import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.task.PlayerTeamInvitationTask;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public final class TeamInvitationManager {
     private static final int MAX_TEAM_MEMBERS = 6;
 
     private final @NotNull RavenSMPPlugin plugin;
+    private final @NotNull PluginSettings pluginSettings;
     private final @NotNull TeamManager teamManager;
 
     private final @NotNull HashMap<RavenSMPTeam, HashSet<UUID>> pendingTeamInvites = new HashMap<>();
@@ -65,6 +67,7 @@ public final class TeamInvitationManager {
         }
 
         new PlayerTeamInvitationTask(
+                this.pluginSettings,
                 playerTeam, targetId,
                 teamInvitationTask -> {
                     if (this.teamManager.findTeamById(playerTeam.teamId()) == null) {
@@ -101,7 +104,7 @@ public final class TeamInvitationManager {
     @Contract(pure = true)
     public @NotNull RavenSMPTeamInvitationStatus acceptInvitation(@NotNull String teamId,
                                                                   @NotNull Player player) {
-        if (!teamId.matches(TeamManager.ALLOWED_TEAM_ID_REGEX))
+        if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex()))
             return RavenSMPTeamInvitationStatus.TEAM_ID_INVALID;
 
         val targetTeam = this.teamManager.findTeamById(teamId);
@@ -128,7 +131,7 @@ public final class TeamInvitationManager {
     @Contract(pure = true)
     public @NotNull RavenSMPTeamInvitationStatus declineInvitation(@NotNull String teamId,
                                                                    @NotNull UUID playerId) {
-        if (!teamId.matches(TeamManager.ALLOWED_TEAM_ID_REGEX))
+        if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex()))
             return RavenSMPTeamInvitationStatus.TEAM_ID_INVALID;
 
         val targetTeam = this.teamManager.findTeamById(teamId);

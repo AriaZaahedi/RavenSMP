@@ -1,10 +1,12 @@
 package ir.ariwuh.plugin.ravensmp;
 
 import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
+import ir.ariwuh.plugin.ravensmp.manager.PluginSettingsManager;
 import ir.ariwuh.plugin.ravensmp.manager.TeamInvitationManager;
 import ir.ariwuh.plugin.ravensmp.manager.TeamManager;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import lombok.val;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Accessors(fluent = true)
@@ -14,6 +16,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
     @Getter
     private static RavenSMPPlugin instance;
 
+    private PluginSettingsManager pluginSettingsManager;
+
     private TeamManager teamManager;
     private TeamInvitationManager teamInvitationManager;
 
@@ -21,8 +25,13 @@ public final class RavenSMPPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.teamManager = new TeamManager();
-        this.teamInvitationManager = new TeamInvitationManager(this, this.teamManager);
+        this.pluginSettingsManager = new PluginSettingsManager(this);
+        this.pluginSettingsManager.reloadPluginSettings();
+
+        val pluginSettings = this.pluginSettingsManager.pluginSettings();
+
+        this.teamManager = new TeamManager(pluginSettings);
+        this.teamInvitationManager = new TeamInvitationManager(this, pluginSettings, this.teamManager);
 
         registerCommands();
     }
@@ -33,6 +42,10 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
+    }
+
+    public void disablePlugin() {
+        getServer().getPluginManager().disablePlugin(this);
     }
 
     private void registerCommands() {

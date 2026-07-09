@@ -2,8 +2,10 @@ package ir.ariwuh.plugin.ravensmp.manager;
 
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamActionStatus;
+import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Contract;
@@ -13,10 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public final class TeamManager {
 
-    public static final @NotNull String ALLOWED_TEAM_ID_REGEX = "^[a-zA-Z0-9_]+$";
-    private static final int MAX_TEAM_ID_LENGTH = 12;
+    private final @NotNull PluginSettings pluginSettings;
 
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
 
@@ -28,8 +30,8 @@ public final class TeamManager {
     public @NotNull RavenSMPTeamActionStatus createTeam(@NotNull UUID teamLeaderId, @NotNull String teamLeaderUsername,
                                                         @NotNull String teamId) {
         if (findTeamByPlayerId(teamLeaderId) != null) return RavenSMPTeamActionStatus.PLAYER_HAS_TEAM;
-        if (!teamId.matches(ALLOWED_TEAM_ID_REGEX)) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
-        if (teamId.length() > MAX_TEAM_ID_LENGTH) return RavenSMPTeamActionStatus.TEAM_ID_TOO_LONG;
+        if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex())) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
+        if (teamId.length() > this.pluginSettings.maxTeamIdLength()) return RavenSMPTeamActionStatus.TEAM_ID_TOO_LONG;
         if (findTeamById(teamId) != null) return RavenSMPTeamActionStatus.TEAM_ID_EXISTS;
 
         val teamLeader = new SMPTeamMember(teamLeaderId, teamLeaderUsername);

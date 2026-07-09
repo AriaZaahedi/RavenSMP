@@ -1,0 +1,10 @@
+settings:
+  team:
+    # Allowed team id regex input for team creation. (Default: "^[a-zA-Z0-9_]+$")
+    allowed-id-regex: "^[a-zA-Z0-9_]+$"
+    # The max amount of characters for team id. (Default: 12)
+    id-max-length: 12
+    # The max amount of team size including team leader. (Default: 6)
+    max-members: 6
+    # The time (in seconds) player has to accept team invitations before they get expired. (Default: 60)
+    invite-expiration-time-seconds: 60
