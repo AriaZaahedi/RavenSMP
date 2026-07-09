@@ -1,5 +1,6 @@
 package ir.ariwuh.plugin.ravensmp;
 
+import ir.ariwuh.plugin.ravensmp.command.SMPCommand;
 import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
 import ir.ariwuh.plugin.ravensmp.manager.PluginSettingsManager;
 import ir.ariwuh.plugin.ravensmp.manager.TeamInvitationManager;
@@ -49,6 +50,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
+        new SMPCommand(this);
         new TeamCommand(this);
     }
 
