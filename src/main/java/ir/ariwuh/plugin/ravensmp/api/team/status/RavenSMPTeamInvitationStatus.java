@@ -1,0 +1,22 @@
+package ir.ariwuh.plugin.ravensmp.api.team.status;
+
+public enum RavenSMPTeamInvitationStatus {
+
+    SUCCESSFUL,
+
+    TEAM_INVALID,
+    TEAM_ID_INVALID,
+    TEAM_ON_CAPACITY,
+
+    PLAYER_HAS_TEAM,
+    PLAYER_LACKING_TEAM,
+    PLAYER_NOT_LEADER,
+    PLAYER_LACKING_INVITE,
+
+    TARGET_IS_SELF,
+    TARGET_IS_IN_TEAM,
+    TARGET_IS_IN_ANOTHER_TEAM,
+    TARGET_OFFLINE,
+    TARGET_ALREADY_INVITED
+
+}

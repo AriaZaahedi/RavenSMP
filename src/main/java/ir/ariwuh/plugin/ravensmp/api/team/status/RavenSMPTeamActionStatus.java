@@ -1,0 +1,20 @@
+package ir.ariwuh.plugin.ravensmp.api.team.status;
+
+public enum RavenSMPTeamActionStatus {
+
+    SUCCESSFUL,
+
+    TEAM_ID_INVALID,
+    TEAM_ID_TOO_LONG,
+    TEAM_ID_EXISTS,
+
+    PLAYER_HAS_TEAM,
+    PLAYER_LACKING_TEAM,
+    PLAYER_NOT_LEADER,
+    PLAYER_IS_LEADER,
+
+    TARGET_IS_SELF,
+    TARGET_NOT_IN_TEAM,
+    TARGET_OFFLINE
+
+}
