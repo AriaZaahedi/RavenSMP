@@ -2,6 +2,8 @@ package ir.ariwuh.plugin.ravensmp;
 
 import ir.ariwuh.plugin.ravensmp.command.SMPCommand;
 import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
+import ir.ariwuh.plugin.ravensmp.listener.PlayerListener;
+import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.manager.PluginSettingsManager;
 import ir.ariwuh.plugin.ravensmp.manager.TeamInvitationManager;
 import ir.ariwuh.plugin.ravensmp.manager.TeamManager;
@@ -18,6 +20,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
     private static RavenSMPPlugin instance;
 
     private PluginSettingsManager pluginSettingsManager;
+    private LanguageManager languageManager;
 
     private TeamManager teamManager;
     private TeamInvitationManager teamInvitationManager;
@@ -29,11 +32,18 @@ public final class RavenSMPPlugin extends JavaPlugin {
         this.pluginSettingsManager = new PluginSettingsManager(this);
         this.pluginSettingsManager.reloadPluginSettings();
 
+        this.languageManager = new LanguageManager(this);
+        this.languageManager.reloadLanguages();
+
         val pluginSettings = this.pluginSettingsManager.pluginSettings();
 
         this.teamManager = new TeamManager(pluginSettings);
         this.teamInvitationManager = new TeamInvitationManager(this, pluginSettings, this.teamManager);
 
+        getServer().getPluginManager().registerEvents(
+                new PlayerListener(this.languageManager, this.teamManager),
+                this
+        );
         registerCommands();
     }
 

@@ -1,9 +1,11 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
+import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.manager.TeamManager;
+import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -25,18 +27,22 @@ public final class TeamTransferSubcommand extends SubCommandHandler {
     @Override
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         if (arguments.length == 0) {
-            player.sendRichMessage("<red>Usage: /team transfer <player>");
+            RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_TRANSFER_USAGE);
             return;
         }
 
         val targetPlayerName = arguments[0];
         switch (this.teamManager.transferTeamLeader(player.getUniqueId(), targetPlayerName)) {
             case PLAYER_LACKING_TEAM ->
-                    player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM");
-            case PLAYER_NOT_LEADER -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_NOT_LEADER");
-            case TARGET_OFFLINE -> player.sendRichMessage("MESSAGE_COMMAND_GENERAL_ERROR_PLAYER_OFFLINE");
-            case TARGET_NOT_IN_TEAM -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_LACKING_TEAM");
-            case TARGET_IS_SELF -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF");
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
+            case PLAYER_NOT_LEADER ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_NOT_LEADER);
+            case TARGET_OFFLINE ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_GENERAL_ERROR_PLAYER_OFFLINE);
+            case TARGET_NOT_IN_TEAM ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_LACKING_TEAM);
+            case TARGET_IS_SELF ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF);
         }
     }
 

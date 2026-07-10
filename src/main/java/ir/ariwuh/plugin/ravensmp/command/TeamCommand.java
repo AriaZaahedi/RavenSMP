@@ -22,7 +22,7 @@ public final class TeamCommand extends CommandParent {
                 new TeamTransferSubcommand(teamManager),
                 new TeamInviteSubcommand(teamManager, teamInvitationManager),
                 new TeamAcceptInvitationSubcommand(teamInvitationManager),
-                new TeamDeclineInvitationSubcommand(teamInvitationManager)
+                new TeamDeclineInvitationSubcommand(teamManager, teamInvitationManager)
         );
     }
 

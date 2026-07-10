@@ -1,0 +1,88 @@
+language-settings:
+  display-name: "English"
+  default: true
+
+message:
+  general:
+    status:
+      enabled: "<green>enabled"
+      disabled: "<red>disabled"
+  command:
+    # general messages
+    general:
+      error:
+        no-permission: "<red>You are not allowed to do this!"
+        exception: "<red>Failed to execute <command_label> command. Please contact an admin to solve this issue."
+        player-not-found: "<red>Target player is offline."
+
+    # language command messages
+    language:
+      usage: "<red>Usage: /language <language><newLine><red>Available languages: <gold><languages>"
+      usage-separator-format: "<red>, <gold>"
+      updated: "<green>Your language has been updated successfully."
+      error:
+        already-selected: "<red>You've already selected this language."
+        not-found: "<red>Language by this id does not exist."
+
+    # team command messages
+    team:
+      general:
+        error:
+          id:
+            not-exists: "<red>Team by this id doesn't exist!"
+            long: "<red>Team id is too long!"
+            invalid: "<red>Team id can only have characters, numbers and underscores."
+          player:
+            has-team: "<red>You are already in a team!"
+            lacking-team: "<red>You don't have a team!"
+            not-leader: "<red>Only team leader can do this!"
+          target:
+            is-self: "<red>You cannot do this to yourself!"
+            is-in-team: "<red>Target is already in the team!"
+            is-in-another-team: "<red>Target is in another team!"
+            lacking-team: "<red>Target is not in the team!"
+      creation:
+        usage: "<red>Usage: /team create <teamId>"
+        success: "<yellow>Team <green><team_id></green> has been created successfully."
+        error:
+          exists: "<red>Team by this id already exists. Use another id."
+      disband:
+        confirmation: "<red>To confirm, use <gold>/team disband <teamId></gold> to disband your team."
+        error:
+          invalid-team-id: "<red>Failed to disband the team. Invalid team id."
+      invitation:
+        declined: "<red>You've declined <yellow><host_name></yellow>'s team invitation."
+        usage:
+          invite: "<red>Usage: /team invite <player>"
+          accept: "<red>Usage: /team accept <teamId>"
+          decline: "<red>Usage: /team decline <teamId>"
+        error:
+          already-invited: "<red>You've already invited this player. Wait for them to accept the team invitation."
+          lacking: "<red>You don't have an invitation from this team."
+          on-capacity: "<red>Team has reached the maximum amount of members."
+          target:
+            invite-disabled: "<red>Target has their team invites disabled."
+            invite-declined: "<yellow><target_name> <red>has declined your team request."
+      leave:
+        error:
+          is-leader: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
+      kick:
+        usage: "<red>Usage: /team kick <player>"
+        target: "<red>You were kicked by the team leader."
+      transfer:
+        usage: "<red>Usage: /team transfer <player>"
+
+broadcast:
+  team:
+    general:
+      prefix: "<green>Team <white><bold>></bold> "
+      member-join: "<newline><team_broadcast_prefix><aqua><member_name><yellow> has joined the team.<newline>"
+      member-leave: "<newline><team_broadcast_prefix><aqua><member_name><yellow> has left the team.<newline>"
+    disband: "<newline><team_broadcast_prefix><yellow>Team leader has disbanded the team.<newline>"
+    kick: "<newline><team_broadcast_prefix><yellow>Team leader has kicked <aqua><member_name></aqua> from the team.<newline>"
+    transfer: "<newline><team_broadcast_prefix><green><old_leader><yellow> has transferred the team leader to <aqua><new_leader></aqua>.<newline>"
+    invitation:
+      members: "<newline><team_broadcast_prefix><aqua><team_leader_name> <yellow>has invited <green><target_name></green> to join the team.<newline>"
+      target: "<newline><yellow><aqua><team_leader_name></aqua> has invited you to join their team!<newline>You have <red>60</red> seconds to accept. <gold><hover:show_text:'<gold>Click to accept'><click:run_command:'/team accept <team_id>'><gold>Click here to join!</click><newline>"
+      expired: "<red>Your team request with <yellow><target_name></yellow> has expired."
+      expired-target: "<red>Your invitation from <yellow><team_leader_name></yellow> has expired."

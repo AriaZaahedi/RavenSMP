@@ -2,7 +2,11 @@ package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.manager.TeamInvitationManager;
+import ir.ariwuh.plugin.ravensmp.manager.TeamManager;
+import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.entity.Player;
@@ -11,27 +15,38 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @SubCommand(label = "decline", description = "Decline a team invitation.")
 public final class TeamDeclineInvitationSubcommand extends SubCommandHandler {
 
+    private final @NotNull TeamManager teamManager;
     private final @NotNull TeamInvitationManager teamInvitationManager;
 
     @Override
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         if (arguments.length == 0) {
-            player.sendRichMessage("<red>Usage: /team decline <teamName>");
+            RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_USAGE_DECLINE);
             return;
         }
 
         val teamId = arguments[0].toLowerCase();
         val playerId = player.getUniqueId();
+        val teamLeaderName = teamLeaderNameById(teamId, playerId);
         switch (this.teamInvitationManager.declineInvitation(teamId, playerId)) {
-            case PLAYER_LACKING_INVITE -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING");
-            case TEAM_ID_INVALID -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_INVALID");
-            case TEAM_INVALID -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_NOT_EXISTS");
-            case SUCCESSFUL -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_INVITATION_DECLINED");
+            case PLAYER_LACKING_INVITE ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING);
+            case TEAM_ID_INVALID ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_ID_INVALID);
+            case TEAM_INVALID ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_ID_NOT_EXISTS);
+            case SUCCESSFUL -> RavenMedia.sendMessage(
+                    player,
+                    LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_DECLINED,
+                    PlaceholderLike.builder().append("host_name", teamLeaderName).build()
+            );
         }
     }
 
@@ -42,6 +57,16 @@ public final class TeamDeclineInvitationSubcommand extends SubCommandHandler {
                 arguments
         );
         return Collections.emptyList();
+    }
+
+    private @NotNull String teamLeaderNameById(@NotNull String teamId, @NotNull UUID playerId) {
+        return this.teamInvitationManager.pendingTeamNamesByPlayerId(playerId).stream()
+                .filter(pendingTeamName -> pendingTeamName.equalsIgnoreCase(teamId))
+                .map(this.teamManager::findTeamById)
+                .takeWhile(Objects::nonNull)
+                .findFirst()
+                .map(team -> team.teamLeader().username())
+                .orElse("???");
     }
 
 }

@@ -1,11 +1,14 @@
 package ir.ariwuh.plugin.ravensmp.manager;
 
 import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
+import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamInvitationStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.task.PlayerTeamInvitationTask;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
+import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -46,7 +49,9 @@ public final class TeamInvitationManager {
         val targetPlayer = Bukkit.getPlayerExact(targetName);
         if (targetPlayer == null) return RavenSMPTeamInvitationStatus.TARGET_OFFLINE;
 
+        val targetUsername = targetPlayer.getName();
         val targetId = targetPlayer.getUniqueId();
+
         if (playerId.equals(targetId)) return RavenSMPTeamInvitationStatus.TARGET_IS_SELF;
 
         val targetTeam = this.teamManager.findTeamByPlayerId(targetId);
@@ -62,8 +67,21 @@ public final class TeamInvitationManager {
 
         val teamLeader = Bukkit.getPlayer(playerId);
         if (teamLeader != null) {
-            teamLeader.sendRichMessage("BROADCAST_TEAM_INVITATION_MEMBERS");
-            targetPlayer.sendRichMessage("BROADCAST_TEAM_INVITATION_TARGET");
+            playerTeam.sendLocalizedMessage(
+                    LanguagePath.BROADCAST_TEAM_INVITATION_MEMBERS,
+                    PlaceholderLike.builder()
+                            .append("team_leader_name", teamLeader.getName())
+                            .append("target_name", targetUsername)
+                            .build()
+            );
+            RavenMedia.sendMessage(
+                    targetPlayer,
+                    LanguagePath.BROADCAST_TEAM_INVITATION_TARGET,
+                    PlaceholderLike.builder()
+                            .append("team_leader_name", teamLeader.getName())
+                            .append("team_id", playerTeam.teamId())
+                            .build()
+            );
         }
 
         new PlayerTeamInvitationTask(
@@ -78,22 +96,47 @@ public final class TeamInvitationManager {
                     if (!pendingTeamInvitations(playerTeam).contains(targetId)) {
                         teamInvitationTask.cancel();
                         if (teamLeader != null)
-                            teamLeader.sendRichMessage("MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DECLINED");
+                            RavenMedia.sendMessage(
+                                    teamLeader,
+                                    LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DECLINED,
+                                    PlaceholderLike.builder()
+                                            .append("target_name", targetPlayer.getName())
+                                            .build()
+                            );
                     }
                 },
                 () -> {
                     pendingTeamInvitations(playerTeam).remove(targetId);
-                    // playerTeam#sendMessage BROADCAST_TEAM_GENERAL_MEMBER_JOIN
+                    playerTeam.sendLocalizedMessage(
+                            LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_JOIN,
+                            PlaceholderLike.builder()
+                                    .append("member_name", targetUsername)
+                                    .build()
+                    );
                 },
                 () -> {
                     pendingTeamInvitations(playerTeam).remove(targetId);
 
                     val offlineLeader = Bukkit.getOfflinePlayer(playerId);
-                    if (targetPlayer.isOnline())
-                        targetPlayer.sendRichMessage("BROADCAST_TEAM_INVITATION_EXPIRED_TARGET");
+                    val offlineLeaderUsername = offlineLeader.getName() != null
+                            ? offlineLeader.getName()
+                            : "???";
+                    if (targetPlayer.isOnline()) RavenMedia.sendMessage(
+                            targetPlayer,
+                            LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED_TARGET,
+                            PlaceholderLike.builder()
+                                    .append("team_leader_name", offlineLeaderUsername)
+                                    .build()
+                    );
 
                     if (offlineLeader.getPlayer() != null) {
-                        offlineLeader.getPlayer().sendRichMessage("BROADCAST_TEAM_INVITATION_EXPIRED");
+                        RavenMedia.sendMessage(
+                                offlineLeader.getPlayer(),
+                                LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED,
+                                PlaceholderLike.builder()
+                                        .append("target_name", targetUsername)
+                                        .build()
+                        );
                     }
                 }
         ).runTaskTimerAsynchronously(this.plugin, 0L, 20L);

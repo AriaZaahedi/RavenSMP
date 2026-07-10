@@ -2,7 +2,9 @@ package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
 import ir.ariwuh.plugin.ravensmp.manager.TeamInvitationManager;
+import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.entity.Player;
@@ -21,17 +23,22 @@ public final class TeamAcceptInvitationSubcommand extends SubCommandHandler {
     @Override
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         if (arguments.length == 0) {
-            player.sendRichMessage("<red>Usage: /team accept <teamName>");
+            RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_USAGE_ACCEPT);
             return;
         }
 
         val teamId = arguments[0].toLowerCase();
         switch (this.teamInvitationManager.acceptInvitation(teamId, player)) {
-            case PLAYER_HAS_TEAM -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM");
-            case PLAYER_LACKING_INVITE -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING");
-            case TEAM_ID_INVALID -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_INVALID");
-            case TEAM_INVALID -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_NOT_EXISTS");
-            case TEAM_ON_CAPACITY -> player.sendRichMessage("MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY");
+            case PLAYER_HAS_TEAM ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM);
+            case PLAYER_LACKING_INVITE ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING);
+            case TEAM_ID_INVALID ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_ID_INVALID);
+            case TEAM_INVALID ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_ID_NOT_EXISTS);
+            case TEAM_ON_CAPACITY ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY);
         }
     }
 
