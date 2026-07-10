@@ -53,6 +53,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
+
+        this.languageManager.unloadLanguages();
     }
 
     public void disablePlugin() {
