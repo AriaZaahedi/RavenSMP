@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
-@SubCommand(label = "reload", description = "Reload the config.")
+@SubCommand(label = "reload", description = "Reload plugin settings.")
 public final class SMPReloadSubcommand extends SubCommandHandler {
 
     private final @NotNull PluginSettingsManager pluginSettingsManager;
