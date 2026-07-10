@@ -1,4 +1,4 @@
-package ir.ariwuh.plugin.ravensmp.manager;
+package ir.ariwuh.plugin.ravensmp.manager.team;
 
 import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;

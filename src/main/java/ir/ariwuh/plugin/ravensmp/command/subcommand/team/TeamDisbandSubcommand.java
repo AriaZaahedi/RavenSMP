@@ -3,7 +3,7 @@ package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
-import ir.ariwuh.plugin.ravensmp.manager.TeamManager;
+import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

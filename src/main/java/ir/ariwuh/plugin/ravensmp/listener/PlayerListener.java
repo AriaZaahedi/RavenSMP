@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.listener;
 
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
-import ir.ariwuh.plugin.ravensmp.manager.TeamManager;
+import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
