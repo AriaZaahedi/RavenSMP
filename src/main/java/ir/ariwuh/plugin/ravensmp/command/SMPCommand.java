@@ -12,7 +12,7 @@ public final class SMPCommand extends CommandParent {
 
         registerSubCommands(
                 new SMPReloadSubcommand(
-                        plugin.pluginSettingsManager()
+                        plugin.pluginSettingsManager(), plugin.languageManager()
                 )
         );
     }

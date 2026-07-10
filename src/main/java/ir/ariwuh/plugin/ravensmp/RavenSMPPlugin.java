@@ -1,5 +1,6 @@
 package ir.ariwuh.plugin.ravensmp;
 
+import ir.ariwuh.plugin.ravensmp.command.LanguageCommand;
 import ir.ariwuh.plugin.ravensmp.command.SMPCommand;
 import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
 import ir.ariwuh.plugin.ravensmp.listener.PlayerListener;
@@ -63,6 +64,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
     private void registerCommands() {
         new SMPCommand(this);
+        new LanguageCommand(this.languageManager);
         new TeamCommand(this);
     }
 
