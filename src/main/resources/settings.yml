@@ -11,6 +11,8 @@ settings:
     # The time (in seconds) player has to accept team invitations before they get expired. (Default: 60)
     invite-expiration-time-seconds: 60
     home:
+      # The time (in seconds) player has to wait to teleport to team home again. (Default: 30)
+      teleport-cooldown-time-seconds: 30
       # List of worlds team leader cannot set home inside.
       blacklisted-worlds:
         - "world_the_end"

@@ -76,6 +76,10 @@ message:
         target: "<red>You were kicked by the team leader."
       transfer:
         usage: "<red>Usage: /team transfer <player>"
+      home:
+        error:
+          on-cooldown: "<red>Wait <gold>30s</gold> between uses!"
+          not-exists: "<red>Team home has not been set yet!"
       option:
         usage: "<red>Usage: /team options <option> <value><newLine><red>Available options: <gold><options>"
         usage-separator-format: "<red>, <gold>"

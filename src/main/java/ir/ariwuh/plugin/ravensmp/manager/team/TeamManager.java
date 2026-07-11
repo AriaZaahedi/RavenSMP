@@ -12,6 +12,7 @@ import ir.ariwuh.plugin.ravensmp.utility.TimedHashSet;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,7 @@ public final class TeamManager {
 
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
     private final @NotNull TimedHashSet<UUID> teamCreationCooldown = new TimedHashSet<>();
+    private final @NotNull TimedHashSet<UUID> teamHomeTeleportCooldown = new TimedHashSet<>();
 
     public void unloadTeams() {
         this.teams.clear();
@@ -147,6 +149,29 @@ public final class TeamManager {
 
         val newLeader = new SMPTeamMember(targetId, targetPlayer.getName());
         ((SMPTeam) playerTeam).teamLeader(newLeader);
+
+        return RavenSMPTeamActionStatus.SUCCESSFUL;
+    }
+
+    @Contract(pure = true)
+    public @NotNull RavenSMPTeamActionStatus teleportToTeamHome(@NotNull Player player) {
+        val playerId = player.getUniqueId();
+
+        val playerTeam = findTeamByPlayerId(playerId);
+        if (playerTeam == null) return RavenSMPTeamActionStatus.PLAYER_LACKING_TEAM;
+
+        if (this.teamHomeTeleportCooldown.contains(playerId))
+            return RavenSMPTeamActionStatus.PLAYER_TEAM_HOME_TELEPORTATION_COOLDOWN;
+
+        val homeLocation = playerTeam.teamOptions().homeLocation();
+        if (homeLocation == null) return RavenSMPTeamActionStatus.PLAYER_TEAM_HOME_NOT_EXIST;
+
+        this.teamHomeTeleportCooldown.add(
+                playerId,
+                this.pluginSettings.teamHomeTeleportCooldownTimeSeconds(),
+                TimeUnit.SECONDS
+        );
+        player.teleportAsync(homeLocation);
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }

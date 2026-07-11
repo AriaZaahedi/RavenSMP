@@ -1,0 +1,31 @@
+package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
+
+import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
+import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
+import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
+@RequiredArgsConstructor
+@SubCommand(label = "home", description = "Teleport to team home.")
+public final class TeamHomeSubcommand extends SubCommandHandler {
+
+    private final @NotNull TeamManager teamManager;
+
+    @Override
+    public void execute(@NotNull Player player, @NonNull String[] arguments) {
+        switch (this.teamManager.teleportToTeamHome(player)) {
+            case PLAYER_LACKING_TEAM ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
+            case PLAYER_TEAM_HOME_TELEPORTATION_COOLDOWN ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_HOME_ERROR_ON_COOLDOWN);
+            case PLAYER_TEAM_HOME_NOT_EXIST ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_HOME_ERROR_NOT_EXISTS);
+        }
+    }
+
+}

@@ -82,6 +82,10 @@ public enum LanguagePath {
     // --- Transfer ---
     MESSAGE_COMMAND_TEAM_TRANSFER_USAGE("message.command.team.transfer.usage"),
 
+    // --- Home ---
+    MESSAGE_COMMAND_TEAM_HOME_ERROR_NOT_EXISTS("message.command.team.home.error.not-exists"),
+    MESSAGE_COMMAND_TEAM_HOME_ERROR_ON_COOLDOWN("message.command.team.home.error.on-cooldown"),
+
     // -- Option ---
     // Usage
     MESSAGE_COMMAND_TEAM_OPTIONS_USAGE("message.command.team.option.usage"),
