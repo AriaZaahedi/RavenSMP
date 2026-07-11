@@ -32,6 +32,10 @@ message:
             not-exists: "<red>Team by this id doesn't exist!"
             long: "<red>Team id is too long!"
             invalid: "<red>Team id can only have characters, numbers and underscores."
+          tag:
+            invalid: "<red>Team tag can only have characters, numbers and underscores."
+            invalid-color: "<red>Team tag color is invalid."
+            long: "<red>Team tag is too long!"
           player:
             has-team: "<red>You are already in a team!"
             lacking-team: "<red>You don't have a team!"
@@ -72,6 +76,11 @@ message:
         target: "<red>You were kicked by the team leader."
       transfer:
         usage: "<red>Usage: /team transfer <player>"
+      option:
+        usage: "<red>Usage: /team options <option> <value><newLine><red>Available options: <gold><options>"
+        usage-separator-format: "<red>, <gold>"
+        error:
+          unknown: "<red>An unknown error occurred. Please try again later."
 
 broadcast:
   team:
@@ -87,3 +96,9 @@ broadcast:
       target: "<newline><yellow><aqua><team_leader_name></aqua> has invited you to join their team!<newline>You have <red>60</red> seconds to accept. <gold><hover:show_text:'<gold>Click to accept'><click:run_command:'/team accept <team_id>'><gold>Click here to join!</click><newline>"
       expired: "<red>Your team request with <yellow><target_name></yellow> has expired."
       expired-target: "<red>Your invitation from <yellow><team_leader_name></yellow> has expired."
+    option:
+      tag-name-changed: "<newline><team_broadcast_prefix><yellow>Team leader has changed the team tag name to <team_tag_name><yellow>!<newline>"
+      tag-color-changed: "<newline><team_broadcast_prefix><yellow>Team leader has changed the team tag color to <team_tag_color_name><yellow>!<newline>"
+      friendly-fire-toggled: "<newline><team_broadcast_prefix><yellow>Team leader has <team_friendly_fire_status><yellow> friendly fire for the team.<newline>"
+      chat-toggled: "<newline><team_broadcast_prefix><aqua><yellow>Team leader has <team_chat_muted_status><yellow> the team chat.<newline>"
+      home-updated: "<newline><team_broadcast_prefix><aqua><yellow>Team leader has <green>updated</green> the team home.<newline>"

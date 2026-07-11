@@ -36,6 +36,11 @@ public enum LanguagePath {
     MESSAGE_COMMAND_TEAM_GENERAL_ERROR_ID_LONG("message.command.team.general.error.id.long"),
     MESSAGE_COMMAND_TEAM_GENERAL_ERROR_ID_INVALID("message.command.team.general.error.id.invalid"),
 
+    // Tags
+    MESSAGE_COMMAND_TEAM_GENERAL_TAG_ERROR_INVALID_NAME("message.command.team.general.error.tag.invalid"),
+    MESSAGE_COMMAND_TEAM_GENERAL_TAG_ERROR_INVALID_COLOR("message.command.team.general.error.tag.invalid-color"),
+    MESSAGE_COMMAND_TEAM_GENERAL_TAG_ERROR_LONG("message.command.team.general.error.tag.long"),
+
     // Player
     MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM("message.command.team.general.error.player.has-team"),
     MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM("message.command.team.general.error.player.lacking-team"),
@@ -77,6 +82,13 @@ public enum LanguagePath {
     // --- Transfer ---
     MESSAGE_COMMAND_TEAM_TRANSFER_USAGE("message.command.team.transfer.usage"),
 
+    // -- Option ---
+    // Usage
+    MESSAGE_COMMAND_TEAM_OPTIONS_USAGE("message.command.team.option.usage"),
+    MESSAGE_COMMAND_TEAM_OPTIONS_USAGE_SEPARATOR_FORMAT("message.command.team.option.usage-separator-format"),
+
+    MESSAGE_COMMAND_TEAM_OPTIONS_ERROR_UNKNOWN("message.command.team.option.error.unknown"),
+
     // === BROADCASTING ===
     // Team
     BROADCAST_TEAM_GENERAL_PREFIX("broadcast.team.general.prefix"),
@@ -90,7 +102,14 @@ public enum LanguagePath {
     BROADCAST_TEAM_INVITATION_MEMBERS("broadcast.team.invitation.members"),
     BROADCAST_TEAM_INVITATION_TARGET("broadcast.team.invitation.target"),
     BROADCAST_TEAM_INVITATION_EXPIRED("broadcast.team.invitation.expired"),
-    BROADCAST_TEAM_INVITATION_EXPIRED_TARGET("broadcast.team.invitation.expired-target");
+    BROADCAST_TEAM_INVITATION_EXPIRED_TARGET("broadcast.team.invitation.expired-target"),
+
+    BROADCAST_TEAM_OPTION_TAG_NAME_CHANGED("broadcast.team.option.tag-name-changed"),
+    BROADCAST_TEAM_OPTION_TAG_COLOR_CHANGED("broadcast.team.option.tag-color-changed"),
+
+    BROADCAST_TEAM_OPTION_FRIENDLY_FIRE_TOGGLED("broadcast.team.option.friendly-fire-toggled"),
+    BROADCAST_TEAM_OPTION_CHAT_TOGGLED("broadcast.team.option.chat-toggled"),
+    BROADCAST_TEAM_OPTION_HOME_UPDATED("broadcast.team.option.home-updated");
 
     private final @NotNull String languagePath;
 

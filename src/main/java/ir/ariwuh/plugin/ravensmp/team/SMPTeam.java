@@ -1,9 +1,10 @@
 package ir.ariwuh.plugin.ravensmp.team;
 
-import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
-import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.Placeholder;
+import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
+import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
+import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,6 +23,8 @@ public final class SMPTeam implements RavenSMPTeam {
     private @NotNull RavenSMPTeamMember teamLeader;
 
     private final @NotNull HashSet<RavenSMPTeamMember> teamMembers;
+    @Getter
+    private final @NotNull RavenSMPTeamOptions teamOptions;
 
     @Getter
     private SMPTeamAudience teamAudience;
@@ -31,6 +34,8 @@ public final class SMPTeam implements RavenSMPTeam {
         this.teamLeader = teamLeader;
 
         this.teamMembers = new HashSet<>();
+        this.teamOptions = new SMPTeamOptions(this);
+
         addMember(teamLeader);
     }
 

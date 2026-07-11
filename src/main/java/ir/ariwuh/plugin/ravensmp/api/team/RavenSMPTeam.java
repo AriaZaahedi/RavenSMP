@@ -27,6 +27,8 @@ public interface RavenSMPTeam {
 
     @NotNull Collection<RavenSMPTeamMember> teamMembers();
 
+    @NotNull RavenSMPTeamOptions teamOptions();
+
     @NotNull RavenSMPTeamAudience teamAudience();
 
 }

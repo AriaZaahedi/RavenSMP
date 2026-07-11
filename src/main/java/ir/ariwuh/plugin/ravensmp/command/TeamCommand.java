@@ -13,6 +13,7 @@ public final class TeamCommand extends CommandParent {
 
         val teamManager = plugin.teamManager();
         val teamInvitationManager = plugin.teamInvitationManager();
+        val teamOptionsManager = plugin.teamOptionsManager();
 
         registerSubCommands(
                 new TeamCreateSubcommand(teamManager),
@@ -20,6 +21,7 @@ public final class TeamCommand extends CommandParent {
                 new TeamKickMemberSubcommand(teamManager),
                 new TeamLeaveSubcommand(teamManager),
                 new TeamTransferSubcommand(teamManager),
+                new TeamOptionsSubcommand(teamManager, teamOptionsManager),
                 new TeamInviteSubcommand(teamManager, teamInvitationManager),
                 new TeamAcceptInvitationSubcommand(teamInvitationManager),
                 new TeamDeclineInvitationSubcommand(teamManager, teamInvitationManager)
