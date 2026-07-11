@@ -9,13 +9,13 @@ import org.jetbrains.annotations.NotNull;
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
-public final class Placeholder {
+public final class RavenPlaceholder {
 
     private final @NotNull String id;
     private final @NotNull Object value;
 
-    public static @NotNull Placeholder of(@NotNull String id, @NotNull Object value) {
-        return new Placeholder(id, value);
+    public static @NotNull RavenPlaceholder of(@NotNull String id, @NotNull Object value) {
+        return new RavenPlaceholder(id, value);
     }
 
 }

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 @Accessors(fluent = true)
 @RequiredArgsConstructor
 @Getter
-public enum LanguagePath {
+public enum RavenLanguagePath {
 
     // === GENERAL ===
     // > Status

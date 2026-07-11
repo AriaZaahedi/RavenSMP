@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.manager.team;
 
-import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamActionStatus;
@@ -83,7 +83,7 @@ public final class TeamManager {
         if (!playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_NOT_LEADER;
         if (!playerTeam.teamId().equalsIgnoreCase(teamId)) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
 
-        playerTeam.sendLocalizedMessage(LanguagePath.BROADCAST_TEAM_DISBAND);
+        playerTeam.sendLocalizedMessage(RavenLanguagePath.BROADCAST_TEAM_DISBAND);
         this.teams.remove(playerTeam);
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
@@ -97,8 +97,8 @@ public final class TeamManager {
 
         playerTeam.removeMember(playerId);
         playerTeam.sendLocalizedMessage(
-                LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
-                PlaceholderLike.builder()
+                RavenLanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
+                RavenPlaceholderLike.builder()
                         .append("member_name", playerName)
                         .build()
         );
@@ -121,15 +121,15 @@ public final class TeamManager {
         playerTeam.removeMember(targetId);
 
         playerTeam.sendLocalizedMessage(
-                LanguagePath.BROADCAST_TEAM_KICK,
-                PlaceholderLike.builder()
+                RavenLanguagePath.BROADCAST_TEAM_KICK,
+                RavenPlaceholderLike.builder()
                         .append("member_name", targetOfflinePlayer.getName() != null ? targetOfflinePlayer.getName() : "???")
                         .build()
         );
         val targetPlayer = targetOfflinePlayer.getPlayer();
         if (targetPlayer != null) RavenMedia.sendMessage(
                 targetPlayer,
-                LanguagePath.MESSAGE_COMMAND_TEAM_KICK_TARGET
+                RavenLanguagePath.MESSAGE_COMMAND_TEAM_KICK_TARGET
         );
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
@@ -152,8 +152,8 @@ public final class TeamManager {
         val newLeaderUsername = targetPlayer.getName();
 
         playerTeam.sendLocalizedMessage(
-                LanguagePath.BROADCAST_TEAM_TRANSFER,
-                PlaceholderLike.builder()
+                RavenLanguagePath.BROADCAST_TEAM_TRANSFER,
+                RavenPlaceholderLike.builder()
                         .append("old_leader", oldLeaderUsername)
                         .append("new_leader", newLeaderUsername)
                         .build()

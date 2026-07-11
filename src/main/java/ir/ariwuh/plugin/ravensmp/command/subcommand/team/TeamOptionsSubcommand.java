@@ -1,8 +1,8 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
-import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.Placeholder;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholder;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamChangeOptionsStatus;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
 import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
@@ -18,7 +18,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 
-import static ir.ariwuh.plugin.ravensmp.api.language.LanguagePath.*;
+import static ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath.*;
 import static ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamChangeOptionsStatus.*;
 
 @SubCommand(label = "options", description = "Adjust team options.")
@@ -35,8 +35,8 @@ public final class TeamOptionsSubcommand extends SubCommandHandler {
     private final @NotNull TeamOptionsManager teamOptionsManager;
 
     private final @NotNull Map<String, TeamOptionSetter> optionSetters;
-    private final @NotNull Map<String, LanguagePath> broadcastMessages;
-    private final @NotNull Map<RavenSMPTeamChangeOptionsStatus, LanguagePath> errorMessages;
+    private final @NotNull Map<String, RavenLanguagePath> broadcastMessages;
+    private final @NotNull Map<RavenSMPTeamChangeOptionsStatus, RavenLanguagePath> errorMessages;
 
     @SuppressWarnings("SpellCheckingInspection")
     public TeamOptionsSubcommand(@NotNull TeamManager teamManager,
@@ -142,16 +142,16 @@ public final class TeamOptionsSubcommand extends SubCommandHandler {
         val broadcastMessage = this.broadcastMessages.get(optionId);
         val teamOptions = (SMPTeamOptions) playerTeam.teamOptions();
         val placeholder = switch (optionId) {
-            case "tagname" -> Placeholder.of("team_tag_name", optionValue);
-            case "tagcolor" -> Placeholder.of(
+            case "tagname" -> RavenPlaceholder.of("team_tag_name", optionValue);
+            case "tagcolor" -> RavenPlaceholder.of(
                     "team_tag_color_name",
                     teamOptions.tagColorId() + teamOptions.tagColorDisplayName()
             );
-            case "friendlyfire" -> Placeholder.of(
+            case "friendlyfire" -> RavenPlaceholder.of(
                     "team_friendly_fire_status",
                     teamOptions.friendlyFire() ? enabledText : disabledText
             );
-            case "chatmuted" -> Placeholder.of(
+            case "chatmuted" -> RavenPlaceholder.of(
                     "team_chat_muted_status",
                     teamOptions.chatMuted() ? disabledText : enabledText
             );
@@ -162,7 +162,7 @@ public final class TeamOptionsSubcommand extends SubCommandHandler {
             if (placeholder != null)
                 playerTeam.sendLocalizedMessage(
                         broadcastMessage,
-                        PlaceholderLike.builder()
+                        RavenPlaceholderLike.builder()
                                 .append(placeholder)
                                 .build()
                 );
@@ -178,8 +178,8 @@ public final class TeamOptionsSubcommand extends SubCommandHandler {
         RavenMedia.sendMessage(
                 player,
                 MESSAGE_COMMAND_TEAM_OPTIONS_USAGE,
-                PlaceholderLike.builder()
-                        .append(Placeholder.of(
+                RavenPlaceholderLike.builder()
+                        .append(RavenPlaceholder.of(
                                 "options",
                                 String.join(separatorFormat, this.optionSetters.keySet())
                         ))

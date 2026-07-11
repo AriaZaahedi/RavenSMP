@@ -2,7 +2,7 @@ package ir.ariwuh.plugin.ravensmp.manager;
 
 import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
 import ir.ariwuh.plugin.ravensmp.config.PluginConfigFile;
-import ir.ariwuh.plugin.ravensmp.api.language.Language;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguage;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.val;
@@ -22,11 +22,11 @@ public final class LanguageManager {
 
     private final @NotNull File languagesFolder;
 
-    private final @NotNull HashSet<Language> languages;
-    private final @NotNull HashMap<UUID, Language> playerLanguageMap;
+    private final @NotNull HashSet<RavenLanguage> languages;
+    private final @NotNull HashMap<UUID, RavenLanguage> playerLanguageMap;
 
     @Getter
-    private @Nullable Language defaultLanguage;
+    private @Nullable RavenLanguage defaultLanguage;
 
     public LanguageManager(@NotNull RavenSMPPlugin plugin) {
         this.plugin = plugin;
@@ -56,13 +56,13 @@ public final class LanguageManager {
         }
 
         Arrays.stream(languageFiles).forEach(this::loadLanguageFile);
-        this.languages.forEach(Language::loadConfigCache);
+        this.languages.forEach(RavenLanguage::loadConfigCache);
 
         ensureDefaultLanguage();
     }
 
     public void unloadLanguages() {
-        this.languages.forEach(Language::clearConfigCache);
+        this.languages.forEach(RavenLanguage::clearConfigCache);
         this.languages.clear();
         this.playerLanguageMap.clear();
         this.defaultLanguage = null;
@@ -91,14 +91,14 @@ public final class LanguageManager {
             return;
         }
 
-        val language = new Language(languageId, displayName, config);
+        val language = new RavenLanguage(languageId, displayName, config);
 
         if (config.getBoolean("language-settings.default")) setAsDefaultLanguage(language);
 
         this.languages.add(language);
     }
 
-    private void setAsDefaultLanguage(@NotNull Language language) {
+    private void setAsDefaultLanguage(@NotNull RavenLanguage language) {
         if (this.defaultLanguage != null) {
             this.logger.warning(
                     ("[Language] [ERROR] Another default language (%s) was set before! " +
@@ -150,7 +150,7 @@ public final class LanguageManager {
 
         englishConfigFile.load();
 
-        val englishLanguage = new Language(
+        val englishLanguage = new RavenLanguage(
                 "english",
                 "English",
                 englishConfigFile.config()
@@ -168,14 +168,14 @@ public final class LanguageManager {
     }
 
     @Contract(pure = true)
-    public boolean updatePlayerLanguage(@NotNull UUID playerId, @NotNull Language language) {
+    public boolean updatePlayerLanguage(@NotNull UUID playerId, @NotNull RavenLanguage language) {
         if (this.playerLanguageMap.getOrDefault(playerId, this.defaultLanguage).equals(language)) return false;
         this.playerLanguageMap.put(playerId, language);
         return true;
     }
 
     @Contract(pure = true)
-    public @Nullable Language findLanguageById(@NotNull String languageId) {
+    public @Nullable RavenLanguage findLanguageById(@NotNull String languageId) {
         return this.languages.stream()
                 .filter(language -> language.id().equalsIgnoreCase(languageId))
                 .findFirst()
@@ -183,12 +183,12 @@ public final class LanguageManager {
     }
 
     @Contract(pure = true)
-    public @NotNull Language findLanguageByPlayerId(@NotNull UUID playerId) {
+    public @NotNull RavenLanguage findLanguageByPlayerId(@NotNull UUID playerId) {
         return this.playerLanguageMap.getOrDefault(playerId, this.defaultLanguage);
     }
 
     @Contract(pure = true)
-    public @NotNull Collection<Language> languages() {
+    public @NotNull Collection<RavenLanguage> languages() {
         return List.copyOf(this.languages);
     }
 

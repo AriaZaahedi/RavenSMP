@@ -1,8 +1,8 @@
 package ir.ariwuh.plugin.ravensmp.command;
 
-import ir.ariwuh.plugin.ravensmp.api.language.Language;
-import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguage;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.command.api.Command;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
@@ -28,15 +28,15 @@ public final class LanguageCommand extends Command {
         if (arguments.length == 0) {
             val separatorFormat = RavenMedia.findValueByPath(
                     player.getUniqueId(),
-                    LanguagePath.MESSAGE_COMMAND_LANGUAGE_USAGE_SEPARATOR_FORMAT
+                    RavenLanguagePath.MESSAGE_COMMAND_LANGUAGE_USAGE_SEPARATOR_FORMAT
             ).asText();
             val languageIds = this.languageManager.languages().stream()
-                    .map(Language::id)
+                    .map(RavenLanguage::id)
                     .toList();
             RavenMedia.sendMessage(
                     player,
-                    LanguagePath.MESSAGE_COMMAND_LANGUAGE_USAGE,
-                    PlaceholderLike.builder()
+                    RavenLanguagePath.MESSAGE_COMMAND_LANGUAGE_USAGE,
+                    RavenPlaceholderLike.builder()
                             .append("languages", String.join(separatorFormat, languageIds))
                             .build()
             );
@@ -46,20 +46,20 @@ public final class LanguageCommand extends Command {
         val languageId = arguments[0].toLowerCase();
         val language = this.languageManager.findLanguageById(languageId);
         if (language == null) {
-            RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_LANGUAGE_ERROR_NOT_FOUND);
+            RavenMedia.sendMessage(player, RavenLanguagePath.MESSAGE_COMMAND_LANGUAGE_ERROR_NOT_FOUND);
             return;
         }
 
         if (this.languageManager.updatePlayerLanguage(player.getUniqueId(), language))
-            RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_LANGUAGE_PLAYER_UPDATED);
+            RavenMedia.sendMessage(player, RavenLanguagePath.MESSAGE_COMMAND_LANGUAGE_PLAYER_UPDATED);
         else
-            RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_LANGUAGE_ERROR_ALREADY_SELECTED);
+            RavenMedia.sendMessage(player, RavenLanguagePath.MESSAGE_COMMAND_LANGUAGE_ERROR_ALREADY_SELECTED);
     }
 
     @Override
     public @NonNull Collection<String> suggest(@NotNull Player player, @NonNull @NotNull String[] arguments) {
         val languageIds = this.languageManager.languages().stream()
-                .map(Language::id)
+                .map(RavenLanguage::id)
                 .toList();
         return switch (arguments.length) {
             case 0 -> languageIds;

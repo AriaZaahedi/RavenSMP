@@ -1,8 +1,8 @@
 package ir.ariwuh.plugin.ravensmp.manager.team;
 
 import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
-import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamInvitationStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
@@ -68,16 +68,16 @@ public final class TeamInvitationManager {
         val teamLeader = Bukkit.getPlayer(playerId);
         if (teamLeader != null) {
             playerTeam.sendLocalizedMessage(
-                    LanguagePath.BROADCAST_TEAM_INVITATION_MEMBERS,
-                    PlaceholderLike.builder()
+                    RavenLanguagePath.BROADCAST_TEAM_INVITATION_MEMBERS,
+                    RavenPlaceholderLike.builder()
                             .append("team_leader_name", teamLeader.getName())
                             .append("target_name", targetUsername)
                             .build()
             );
             RavenMedia.sendMessage(
                     targetPlayer,
-                    LanguagePath.BROADCAST_TEAM_INVITATION_TARGET,
-                    PlaceholderLike.builder()
+                    RavenLanguagePath.BROADCAST_TEAM_INVITATION_TARGET,
+                    RavenPlaceholderLike.builder()
                             .append("team_leader_name", teamLeader.getName())
                             .append("team_id", playerTeam.teamId())
                             .build()
@@ -98,8 +98,8 @@ public final class TeamInvitationManager {
                         if (teamLeader != null)
                             RavenMedia.sendMessage(
                                     teamLeader,
-                                    LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DECLINED,
-                                    PlaceholderLike.builder()
+                                    RavenLanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DECLINED,
+                                    RavenPlaceholderLike.builder()
                                             .append("target_name", targetPlayer.getName())
                                             .build()
                             );
@@ -108,8 +108,8 @@ public final class TeamInvitationManager {
                 () -> {
                     pendingTeamInvitations(playerTeam).remove(targetId);
                     playerTeam.sendLocalizedMessage(
-                            LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_JOIN,
-                            PlaceholderLike.builder()
+                            RavenLanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_JOIN,
+                            RavenPlaceholderLike.builder()
                                     .append("member_name", targetUsername)
                                     .build()
                     );
@@ -123,8 +123,8 @@ public final class TeamInvitationManager {
                             : "???";
                     if (targetPlayer.isOnline()) RavenMedia.sendMessage(
                             targetPlayer,
-                            LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED_TARGET,
-                            PlaceholderLike.builder()
+                            RavenLanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED_TARGET,
+                            RavenPlaceholderLike.builder()
                                     .append("team_leader_name", offlineLeaderUsername)
                                     .build()
                     );
@@ -132,8 +132,8 @@ public final class TeamInvitationManager {
                     if (offlineLeader.getPlayer() != null) {
                         RavenMedia.sendMessage(
                                 offlineLeader.getPlayer(),
-                                LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED,
-                                PlaceholderLike.builder()
+                                RavenLanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED,
+                                RavenPlaceholderLike.builder()
                                         .append("target_name", targetUsername)
                                         .build()
                         );

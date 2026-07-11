@@ -11,47 +11,47 @@ import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class PlaceholderLike {
+public final class RavenPlaceholderLike {
 
-    private final @NotNull List<Placeholder> placeholders = new ArrayList<>();
+    private final @NotNull List<RavenPlaceholder> placeholders = new ArrayList<>();
 
     @Contract(pure = true)
-    public static @NotNull PlaceholderLike builder() {
-        return new PlaceholderLike();
+    public static @NotNull RavenPlaceholderLike builder() {
+        return new RavenPlaceholderLike();
     }
 
     @Contract("_, _ -> this")
-    public @NotNull PlaceholderLike append(@NotNull String id, @NotNull Object value) {
-        this.placeholders.add(Placeholder.of(id, value));
+    public @NotNull RavenPlaceholderLike append(@NotNull String id, @NotNull Object value) {
+        this.placeholders.add(RavenPlaceholder.of(id, value));
         return this;
     }
 
     @Contract("_ -> this")
-    public @NotNull PlaceholderLike append(@NotNull PlaceholderLike placeholderLike) {
+    public @NotNull RavenPlaceholderLike append(@NotNull RavenPlaceholderLike placeholderLike) {
         this.placeholders.addAll(placeholderLike.build());
         return this;
     }
 
     @Contract("_ -> this")
-    public @NotNull PlaceholderLike append(@NotNull Placeholder placeholder) {
+    public @NotNull RavenPlaceholderLike append(@NotNull RavenPlaceholder placeholder) {
         this.placeholders.add(placeholder);
         return this;
     }
 
     @Contract("_ -> this")
-    public @NotNull PlaceholderLike append(@NotNull Collection<Placeholder> placeholders) {
+    public @NotNull RavenPlaceholderLike append(@NotNull Collection<RavenPlaceholder> placeholders) {
         this.placeholders.addAll(placeholders);
         return this;
     }
 
     @Contract("_ -> this")
-    public @NotNull PlaceholderLike append(@NotNull Placeholder... placeholders) {
+    public @NotNull RavenPlaceholderLike append(@NotNull RavenPlaceholder... placeholders) {
         this.placeholders.addAll(Arrays.stream(placeholders).toList());
         return this;
     }
 
     @Contract(pure = true)
-    public @NotNull Collection<Placeholder> build() {
+    public @NotNull Collection<RavenPlaceholder> build() {
         return this.placeholders;
     }
 

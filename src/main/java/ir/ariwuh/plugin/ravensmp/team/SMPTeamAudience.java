@@ -1,8 +1,8 @@
 package ir.ariwuh.plugin.ravensmp.team;
 
-import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.Placeholder;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholder;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamAudience;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.AccessLevel;
@@ -24,13 +24,13 @@ public final class SMPTeamAudience implements RavenSMPTeamAudience {
     }
 
     @Override
-    public void sendLocalizedMessage(@NotNull LanguagePath languagePath) {
+    public void sendLocalizedMessage(@NotNull RavenLanguagePath languagePath) {
         this.players.forEach(player -> {
-            val prefix = RavenMedia.findValueByPath(player.getUniqueId(), LanguagePath.BROADCAST_TEAM_GENERAL_PREFIX).asText();
+            val prefix = RavenMedia.findValueByPath(player.getUniqueId(), RavenLanguagePath.BROADCAST_TEAM_GENERAL_PREFIX).asText();
             RavenMedia.sendMessage(
                     player,
                     languagePath,
-                    PlaceholderLike.builder()
+                    RavenPlaceholderLike.builder()
                             .append("team_broadcast_prefix", prefix)
                             .build()
             );
@@ -38,14 +38,14 @@ public final class SMPTeamAudience implements RavenSMPTeamAudience {
     }
 
     @Override
-    public void sendLocalizedMessage(@NotNull LanguagePath languagePath,
-                                     @NotNull Collection<Placeholder> placeholders) {
+    public void sendLocalizedMessage(@NotNull RavenLanguagePath languagePath,
+                                     @NotNull Collection<RavenPlaceholder> placeholders) {
         this.players.forEach(player -> {
-            val prefix = RavenMedia.findValueByPath(player.getUniqueId(), LanguagePath.BROADCAST_TEAM_GENERAL_PREFIX).asText();
+            val prefix = RavenMedia.findValueByPath(player.getUniqueId(), RavenLanguagePath.BROADCAST_TEAM_GENERAL_PREFIX).asText();
             RavenMedia.sendMessage(
                     player,
                     languagePath,
-                    PlaceholderLike.builder()
+                    RavenPlaceholderLike.builder()
                             .append("team_broadcast_prefix", prefix)
                             .append(placeholders)
                             .build()

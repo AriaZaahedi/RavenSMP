@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 @Accessors(fluent = true)
-public final class Language {
+public final class RavenLanguage {
 
     @Getter
     private final @NotNull String id;
@@ -20,15 +20,15 @@ public final class Language {
     private final @NotNull String displayName;
     @Getter
     private final @NotNull FileConfiguration config;
-    private final @NotNull HashMap<LanguagePath, LanguageValue> languageValuesMap;
+    private final @NotNull HashMap<RavenLanguagePath, RavenLanguageValue> languageValuesMap;
 
     @Getter
     @Setter
     private boolean defaultLanguage;
 
-    public Language(@NotNull String id,
-                    @NotNull String displayName,
-                    @NotNull FileConfiguration config) {
+    public RavenLanguage(@NotNull String id,
+                         @NotNull String displayName,
+                         @NotNull FileConfiguration config) {
         this.id = id;
         this.displayName = displayName;
         this.config = config;
@@ -41,17 +41,17 @@ public final class Language {
     }
 
     public void loadConfigCache() {
-        for (val languagePath : LanguagePath.values()) {
+        for (val languagePath : RavenLanguagePath.values()) {
             val configValue = this.config.get(languagePath.languagePath());
             if (configValue == null) continue;
 
-            this.languageValuesMap.put(languagePath, new LanguageValue(configValue));
+            this.languageValuesMap.put(languagePath, new RavenLanguageValue(configValue));
         }
     }
 
     @Contract(pure = true)
-    public @NotNull LanguageValue findValueByPath(@Nullable LanguagePath languagePath) {
-        return this.languageValuesMap.getOrDefault(languagePath, LanguageValue.NOT_FOUND_VALUE);
+    public @NotNull RavenLanguageValue findValueByPath(@Nullable RavenLanguagePath languagePath) {
+        return this.languageValuesMap.getOrDefault(languagePath, RavenLanguageValue.NOT_FOUND_VALUE);
     }
 
 }

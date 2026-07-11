@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.team;
 
-import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.Placeholder;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholder;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamOptions;
@@ -58,14 +58,14 @@ public final class SMPTeam implements RavenSMPTeam {
     }
 
     @Override
-    public void sendLocalizedMessage(@NotNull LanguagePath languagePath) {
+    public void sendLocalizedMessage(@NotNull RavenLanguagePath languagePath) {
         if (this.teamAudience == null) return;
         this.teamAudience.sendLocalizedMessage(languagePath);
     }
 
     @Override
-    public void sendLocalizedMessage(@NotNull LanguagePath languagePath,
-                                     @NotNull Collection<Placeholder> placeholders) {
+    public void sendLocalizedMessage(@NotNull RavenLanguagePath languagePath,
+                                     @NotNull Collection<RavenPlaceholder> placeholders) {
         if (this.teamAudience == null) return;
         this.teamAudience.sendLocalizedMessage(languagePath, placeholders);
     }

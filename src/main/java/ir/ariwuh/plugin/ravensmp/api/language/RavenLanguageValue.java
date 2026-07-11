@@ -1,6 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.api.language;
 
-import ir.ariwuh.plugin.ravensmp.api.language.placeholder.Placeholder;
+import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholder;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.kyori.adventure.text.Component;
@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 @RequiredArgsConstructor
-public final class LanguageValue {
+public final class RavenLanguageValue {
 
     public static final @NotNull String NOT_FOUND_VALUE_RESULT = "NOT_FOUND";
-    public static final @NotNull LanguageValue NOT_FOUND_VALUE = new LanguageValue(NOT_FOUND_VALUE_RESULT);
+    public static final @NotNull RavenLanguageValue NOT_FOUND_VALUE = new RavenLanguageValue(NOT_FOUND_VALUE_RESULT);
 
     private final @Nullable Object value;
 
@@ -39,19 +39,19 @@ public final class LanguageValue {
         return extractStringList(MiniMessage.miniMessage()::deserialize);
     }
 
-    public @NotNull String asParsedText(@NotNull Collection<Placeholder> placeholders) {
+    public @NotNull String asParsedText(@NotNull Collection<RavenPlaceholder> placeholders) {
         return parsePlaceholder(asText(), placeholders);
     }
 
-    public @NotNull List<String> asParsedTextList(@NotNull Collection<Placeholder> placeholders) {
+    public @NotNull List<String> asParsedTextList(@NotNull Collection<RavenPlaceholder> placeholders) {
         return extractStringList(text -> parsePlaceholder(text, placeholders));
     }
 
-    public @NotNull Component asParsedComponent(@NotNull Collection<Placeholder> placeholders) {
+    public @NotNull Component asParsedComponent(@NotNull Collection<RavenPlaceholder> placeholders) {
         return deserialize(asParsedText(placeholders));
     }
 
-    public @NotNull List<Component> asParsedPlaceholderComponentList(@NotNull Collection<Placeholder> placeholders) {
+    public @NotNull List<Component> asParsedPlaceholderComponentList(@NotNull Collection<RavenPlaceholder> placeholders) {
         return extractStringList(text -> deserialize(parsePlaceholder(text, placeholders)));
     }
 
@@ -76,7 +76,7 @@ public final class LanguageValue {
                 .collect(Collectors.toList());
     }
 
-    private @NotNull String parsePlaceholder(@NotNull String text, @NotNull Collection<Placeholder> placeholders) {
+    private @NotNull String parsePlaceholder(@NotNull String text, @NotNull Collection<RavenPlaceholder> placeholders) {
         if (NOT_FOUND_VALUE_RESULT.equals(text) || placeholders.isEmpty()) return text;
         for (val placeholder : placeholders) {
             val replacement = placeholder.value() instanceof String
