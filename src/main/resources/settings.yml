@@ -6,5 +6,7 @@ settings:
     id-max-length: 12
     # The max amount of team size including team leader. (Default: 6)
     max-members: 6
+    # The time (in seconds) player has to wait to create a team after disbanding one. (Default: 60)
+    creation-cooldown-time-seconds: 60
     # The time (in seconds) player has to accept team invitations before they get expired. (Default: 60)
     invite-expiration-time-seconds: 60

@@ -49,7 +49,11 @@ public final class TeamManager {
         if (this.teamCreationCooldown.contains(teamLeaderId))
             return RavenSMPTeamActionStatus.PLAYER_TEAM_CREATION_COOLDOWN;
 
-        this.teamCreationCooldown.add(teamLeaderId, 60, TimeUnit.SECONDS);
+        this.teamCreationCooldown.add(
+                teamLeaderId,
+                this.pluginSettings.teamCreationCooldownTimeSeconds(),
+                TimeUnit.SECONDS
+        );
         val teamLeader = new SMPTeamMember(teamLeaderId, teamLeaderUsername);
         val newTeam = new SMPTeam(teamId, teamLeader);
 
