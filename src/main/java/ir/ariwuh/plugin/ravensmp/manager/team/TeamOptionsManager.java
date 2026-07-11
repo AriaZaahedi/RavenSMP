@@ -29,9 +29,9 @@ public final class TeamOptionsManager {
         val testOptions = new SMPTeamOptions(playerTeam);
         testOptions.tagName(currentOptions.tagName());
         testOptions.tagColor(currentOptions.tagColor());
+        testOptions.homeLocation(currentOptions.homeLocation());
         testOptions.friendlyFire(currentOptions.friendlyFire());
         testOptions.chatMuted(currentOptions.chatMuted());
-        testOptions.homeLocation(currentOptions.homeLocation());
 
         try {
             optionsBuilder.apply(testOptions);
@@ -44,9 +44,9 @@ public final class TeamOptionsManager {
 
         currentOptions.tagName(testOptions.tagName());
         currentOptions.tagColor(testOptions.tagColor());
+        currentOptions.homeLocation(testOptions.homeLocation());
         currentOptions.friendlyFire(testOptions.friendlyFire());
         currentOptions.chatMuted(testOptions.chatMuted());
-        currentOptions.homeLocation(testOptions.homeLocation());
 
         return RavenSMPTeamChangeOptionsStatus.SUCCESSFUL;
     }
@@ -60,6 +60,8 @@ public final class TeamOptionsManager {
 
 
     private @NotNull RavenSMPTeamChangeOptionsStatus validateTeamOptions(@NotNull SMPTeamOptions teamOptions) {
+        val playerTeam = teamOptions.smpTeam();
+
         if (!teamOptions.tagName().matches(this.pluginSettings.allowedTeamIdRegex()))
             return RavenSMPTeamChangeOptionsStatus.TAG_NAME_INVALID;
         if (teamOptions.tagColor() == null) return RavenSMPTeamChangeOptionsStatus.TAG_COLOR_INVALID;
@@ -68,6 +70,8 @@ public final class TeamOptionsManager {
         if (homeLocation != null)
             if (isInBlacklistedWorld(homeLocation.getWorld()))
                 return RavenSMPTeamChangeOptionsStatus.HOME_WORLD_BLACKLISTED;
+
+        if (homeLocation == null) this.teamManager.removeTeamHomeCooldownForTeam(playerTeam);
 
         return RavenSMPTeamChangeOptionsStatus.SUCCESSFUL;
     }

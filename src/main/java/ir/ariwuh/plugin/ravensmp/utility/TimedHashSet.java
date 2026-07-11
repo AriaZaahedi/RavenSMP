@@ -22,6 +22,10 @@ public final class TimedHashSet<K> {
         scheduleCleanup(duration, timeUnit);
     }
 
+    public void remove(@NotNull K key) {
+        this.map.remove(key);
+    }
+
     public boolean contains(@NotNull K key) {
         return this.map.containsKey(key);
     }

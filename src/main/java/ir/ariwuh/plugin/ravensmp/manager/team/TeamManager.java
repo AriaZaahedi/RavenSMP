@@ -3,6 +3,7 @@ package ir.ariwuh.plugin.ravensmp.manager.team;
 import ir.ariwuh.plugin.ravensmp.api.language.LanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.PlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
+import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamActionStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
@@ -17,9 +18,11 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public final class TeamManager {
@@ -39,6 +42,15 @@ public final class TeamManager {
         if (playerTeam == null) return;
 
         ((SMPTeam) playerTeam).updateTeamAudience();
+    }
+
+    public void removeTeamHomeCooldownForTeam(@NotNull RavenSMPTeam playerTeam) {
+        val teamMemberIds = playerTeam.teamMembers().stream()
+                .map(RavenSMPTeamMember::playerId)
+                .filter(this.teamHomeTeleportCooldown::contains)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        teamMemberIds.forEach(this.teamHomeTeleportCooldown::remove);
     }
 
     @Contract(pure = true)
