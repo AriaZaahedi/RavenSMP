@@ -40,6 +40,8 @@ public final class TeamCreateSubcommand extends SubCommandHandler {
                     RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_ID_LONG);
             case PLAYER_HAS_TEAM ->
                     RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM);
+            case PLAYER_TEAM_CREATION_COOLDOWN ->
+                    RavenMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_CREATION_ERROR_ON_COOLDOWN);
         }
     }
 

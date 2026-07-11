@@ -46,6 +46,7 @@ message:
         success: "<yellow>Team <green><team_id></green> has been created successfully."
         error:
           exists: "<red>Team by this id already exists. Use another id."
+          on-cooldown: "<red>You can only create teams every 60 seconds."
       disband:
         confirmation: "<red>To confirm, use <gold>/team disband <teamId></gold> to disband your team."
         error:

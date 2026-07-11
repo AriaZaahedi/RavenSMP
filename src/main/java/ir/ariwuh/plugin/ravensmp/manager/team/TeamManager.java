@@ -8,6 +8,7 @@ import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
+import ir.ariwuh.plugin.ravensmp.utility.TimedHashSet;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 public final class TeamManager {
@@ -24,6 +26,7 @@ public final class TeamManager {
     private final @NotNull PluginSettings pluginSettings;
 
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
+    private final @NotNull TimedHashSet<UUID> teamCreationCooldown = new TimedHashSet<>();
 
     public void unloadTeams() {
         this.teams.clear();
@@ -43,7 +46,10 @@ public final class TeamManager {
         if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex())) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
         if (teamId.length() > this.pluginSettings.maxTeamIdLength()) return RavenSMPTeamActionStatus.TEAM_ID_TOO_LONG;
         if (findTeamById(teamId) != null) return RavenSMPTeamActionStatus.TEAM_ID_EXISTS;
+        if (this.teamCreationCooldown.contains(teamLeaderId))
+            return RavenSMPTeamActionStatus.PLAYER_TEAM_CREATION_COOLDOWN;
 
+        this.teamCreationCooldown.add(teamLeaderId, 60, TimeUnit.SECONDS);
         val teamLeader = new SMPTeamMember(teamLeaderId, teamLeaderUsername);
         val newTeam = new SMPTeam(teamId, teamLeader);
 

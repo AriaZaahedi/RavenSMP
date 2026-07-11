@@ -51,6 +51,7 @@ public enum LanguagePath {
     MESSAGE_COMMAND_TEAM_CREATION_USAGE("message.command.team.creation.usage"),
     MESSAGE_COMMAND_TEAM_CREATION_SUCCESS("message.command.team.creation.success"),
     MESSAGE_COMMAND_TEAM_CREATION_ERROR_EXISTS("message.command.team.creation.error.exists"),
+    MESSAGE_COMMAND_TEAM_CREATION_ERROR_ON_COOLDOWN("message.command.team.creation.error.on-cooldown"),
 
     // --- Disband ---
     MESSAGE_COMMAND_TEAM_DISBAND_CONFIRMATION("message.command.team.disband.confirmation"),
