@@ -4,6 +4,8 @@ settings:
     allowed-id-regex: "^[a-zA-Z0-9_]+$"
     # The max amount of characters for team id. (Default: 12)
     id-max-length: 12
+    # The max amount of characters for team tag. (Default: 7)
+    tag-max-length: 7
     # The max amount of team size including team leader. (Default: 6)
     max-members: 6
     # The time (in seconds) player has to wait to create a team after disbanding one. (Default: 60)

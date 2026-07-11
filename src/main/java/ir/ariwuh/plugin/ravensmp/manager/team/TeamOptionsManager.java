@@ -64,6 +64,8 @@ public final class TeamOptionsManager {
 
         if (!teamOptions.tagName().matches(this.pluginSettings.allowedTeamIdRegex()))
             return RavenSMPTeamChangeOptionsStatus.TAG_NAME_INVALID;
+        if (teamOptions.tagName().length() > this.pluginSettings.maxTeamTagLength())
+            return RavenSMPTeamChangeOptionsStatus.TAG_NAME_LONG;
         if (teamOptions.tagColor() == null) return RavenSMPTeamChangeOptionsStatus.TAG_COLOR_INVALID;
 
         val homeLocation = teamOptions.homeLocation();

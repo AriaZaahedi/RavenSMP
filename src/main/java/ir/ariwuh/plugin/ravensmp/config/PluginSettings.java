@@ -12,6 +12,7 @@ public final class PluginSettings {
     // === Team Settings ===
     private String allowedTeamIdRegex;
     private int maxTeamIdLength;
+    private int maxTeamTagLength;
     private int maxTeamMember;
     private int teamCreationCooldownTimeSeconds;
     private int teamInviteExpirationTimeSeconds;
