@@ -80,6 +80,8 @@ message:
         usage: "<red>Usage: /team options <option> <value><newLine><red>Available options: <gold><options>"
         usage-separator-format: "<red>, <gold>"
         error:
+          home:
+            blacklisted-world: "<red>You cannot set team home in this world!"
           unknown: "<red>An unknown error occurred. Please try again later."
 
 broadcast:

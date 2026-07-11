@@ -87,6 +87,7 @@ public enum LanguagePath {
     MESSAGE_COMMAND_TEAM_OPTIONS_USAGE("message.command.team.option.usage"),
     MESSAGE_COMMAND_TEAM_OPTIONS_USAGE_SEPARATOR_FORMAT("message.command.team.option.usage-separator-format"),
 
+    MESSAGE_COMMAND_TEAM_OPTIONS_ERROR_HOME_BLACKLISTED_WORLD("message.command.team.option.error.home.blacklisted-world"),
     MESSAGE_COMMAND_TEAM_OPTIONS_ERROR_UNKNOWN("message.command.team.option.error.unknown"),
 
     // === BROADCASTING ===

@@ -9,6 +9,7 @@ public enum RavenSMPTeamChangeOptionsStatus {
     TAG_NAME_LONG,
     TAG_COLOR_INVALID,
     HOME_LOCATION_NULL,
+    HOME_WORLD_BLACKLISTED,
     UNKNOWN_ERROR
 
 }

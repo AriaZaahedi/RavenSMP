@@ -5,8 +5,11 @@ import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -48,10 +51,23 @@ public final class TeamOptionsManager {
         return RavenSMPTeamChangeOptionsStatus.SUCCESSFUL;
     }
 
+    private boolean isInBlacklistedWorld(@NotNull World world) {
+        return this.pluginSettings.blacklistedTeamHomeWorlds().stream()
+                .map(Bukkit::getWorld)
+                .filter(Objects::nonNull)
+                .anyMatch(blacklistedWorld -> blacklistedWorld.getName().equals(world.getName()));
+    }
+
+
     private @NotNull RavenSMPTeamChangeOptionsStatus validateTeamOptions(@NotNull SMPTeamOptions teamOptions) {
         if (!teamOptions.tagName().matches(this.pluginSettings.allowedTeamIdRegex()))
             return RavenSMPTeamChangeOptionsStatus.TAG_NAME_INVALID;
         if (teamOptions.tagColor() == null) return RavenSMPTeamChangeOptionsStatus.TAG_COLOR_INVALID;
+
+        val homeLocation = teamOptions.homeLocation();
+        if (homeLocation != null)
+            if (isInBlacklistedWorld(homeLocation.getWorld()))
+                return RavenSMPTeamChangeOptionsStatus.HOME_WORLD_BLACKLISTED;
 
         return RavenSMPTeamChangeOptionsStatus.SUCCESSFUL;
     }

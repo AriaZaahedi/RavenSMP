@@ -44,11 +44,15 @@ public final class PluginSettingsManager {
         val teamCreationCooldownTimeSeconds = config.getInt("settings.team.creation-cooldown-time-seconds", 60);
         val teamInviteExpirationTimeSeconds = config.getInt("settings.team.invite-expiration-time-seconds", 60);
 
+        val blacklistedTeamHomeWorlds = config.getStringList("settings.team.home.blacklisted-worlds");
+
         this.pluginSettings.allowedTeamIdRegex(allowedTeamIdRegex);
         this.pluginSettings.maxTeamIdLength(maxTeamIdLength);
         this.pluginSettings.maxTeamMember(maxTeamMembers);
         this.pluginSettings.teamCreationCooldownTimeSeconds(teamCreationCooldownTimeSeconds);
         this.pluginSettings.teamInviteExpirationTimeSeconds(teamInviteExpirationTimeSeconds);
+
+        this.pluginSettings.blacklistedTeamHomeWorlds(blacklistedTeamHomeWorlds);
     }
 
 }
