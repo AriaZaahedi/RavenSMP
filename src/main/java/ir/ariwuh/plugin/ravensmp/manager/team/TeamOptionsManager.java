@@ -62,7 +62,6 @@ public final class TeamOptionsManager {
                 .anyMatch(blacklistedWorld -> blacklistedWorld.getName().equals(world.getName()));
     }
 
-
     private @NotNull RavenSMPTeamChangeOptionsStatus validateTeamOptions(@NotNull SMPTeamOptions teamOptions) {
         val playerTeam = teamOptions.smpTeam();
 

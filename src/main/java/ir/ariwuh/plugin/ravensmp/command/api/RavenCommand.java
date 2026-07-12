@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @Accessors(fluent = true)
-public abstract class Command implements BasicCommand {
+public abstract class RavenCommand implements BasicCommand {
 
     private static final @NotNull RavenSMPPlugin PLUGIN = RavenSMPPlugin.instance();
 
@@ -28,9 +28,9 @@ public abstract class Command implements BasicCommand {
     @Getter
     private final @Nullable String permission;
 
-    public Command(@NotNull String label,
-                   @Nullable String permission,
-                   @NotNull Collection<String> aliases) {
+    public RavenCommand(@NotNull String label,
+                        @Nullable String permission,
+                        @NotNull Collection<String> aliases) {
         this.label = label;
         this.permission = permission;
 
@@ -44,15 +44,15 @@ public abstract class Command implements BasicCommand {
         );
     }
 
-    public Command(@NotNull String label, @Nullable String permission) {
+    public RavenCommand(@NotNull String label, @Nullable String permission) {
         this(label, permission, List.of());
     }
 
-    public Command(@NotNull String label, @NotNull Collection<String> aliases) {
+    public RavenCommand(@NotNull String label, @NotNull Collection<String> aliases) {
         this(label, null, aliases);
     }
 
-    public Command(@NotNull String label) {
+    public RavenCommand(@NotNull String label) {
         this(label, List.of());
     }
 

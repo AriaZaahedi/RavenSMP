@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
-@SubCommand(label = "create", description = "Create a team.")
-public final class TeamCreateSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "create", description = "Create a team.")
+public final class TeamCreateSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 

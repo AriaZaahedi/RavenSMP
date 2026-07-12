@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
-@SubCommand(label = "disband", description = "Disband your team.")
-public final class TeamDisbandSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "disband", description = "Disband your team.")
+public final class TeamDisbandSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 

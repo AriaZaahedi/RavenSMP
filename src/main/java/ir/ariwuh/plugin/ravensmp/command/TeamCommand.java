@@ -1,12 +1,12 @@
 package ir.ariwuh.plugin.ravensmp.command;
 
 import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
-import ir.ariwuh.plugin.ravensmp.command.api.CommandParent;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenCommandParent;
 import ir.ariwuh.plugin.ravensmp.command.subcommand.team.*;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
-public final class TeamCommand extends CommandParent {
+public final class TeamCommand extends RavenCommandParent {
 
     public TeamCommand(@NotNull RavenSMPPlugin plugin) {
         super("team");

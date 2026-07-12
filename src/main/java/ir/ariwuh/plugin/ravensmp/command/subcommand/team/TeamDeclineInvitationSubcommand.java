@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamInvitationManager;
@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@SubCommand(label = "decline", description = "Decline a team invitation.")
-public final class TeamDeclineInvitationSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "decline", description = "Decline a team invitation.")
+public final class TeamDeclineInvitationSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
     private final @NotNull TeamInvitationManager teamInvitationManager;

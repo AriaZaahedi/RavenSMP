@@ -1,8 +1,8 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
-@SubCommand(label = "home", description = "Teleport to team home.")
-public final class TeamHomeSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "home", description = "Teleport to team home.")
+public final class TeamHomeSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 

@@ -4,8 +4,8 @@ import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholder;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamChangeOptionsStatus;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamOptionsManager;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
@@ -21,8 +21,8 @@ import java.util.*;
 import static ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath.*;
 import static ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamChangeOptionsStatus.*;
 
-@SubCommand(label = "options", description = "Adjust team options.")
-public final class TeamOptionsSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "options", description = "Adjust team options.")
+public final class TeamOptionsSubcommand extends RavenSubCommandHandler {
 
     private static final @NotNull List<String> TAG_COLORS = List.of(
             "dark_blue", "dark_green", "dark_aqua",

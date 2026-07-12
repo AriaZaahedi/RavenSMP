@@ -3,7 +3,7 @@ package ir.ariwuh.plugin.ravensmp.command;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguage;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
-import ir.ariwuh.plugin.ravensmp.command.api.Command;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenCommand;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.val;
@@ -14,7 +14,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.List;
 
-public final class LanguageCommand extends Command {
+public final class LanguageCommand extends RavenCommand {
 
     private final @NotNull LanguageManager languageManager;
 

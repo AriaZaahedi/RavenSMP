@@ -2,8 +2,8 @@ package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import java.util.Collections;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-@SubCommand(label = "transfer", description = "Change the team leadership.")
-public final class TeamTransferSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "transfer", description = "Change the team leadership.")
+public final class TeamTransferSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 

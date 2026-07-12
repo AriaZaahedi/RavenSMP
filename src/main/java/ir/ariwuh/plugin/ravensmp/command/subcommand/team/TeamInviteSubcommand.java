@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamInvitationManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
@@ -17,8 +17,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 @RequiredArgsConstructor
-@SubCommand(label = "invite", description = "Invite a player.")
-public final class TeamInviteSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "invite", description = "Invite a player.")
+public final class TeamInviteSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
     private final @NotNull TeamInvitationManager teamInvitationManager;

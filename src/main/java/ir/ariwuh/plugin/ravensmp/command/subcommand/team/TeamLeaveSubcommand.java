@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommand;
-import ir.ariwuh.plugin.ravensmp.command.api.SubCommandHandler;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
+import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
-@SubCommand(label = "leave", description = "Leave the team.")
-public final class TeamLeaveSubcommand extends SubCommandHandler {
+@RavenSubCommand(label = "leave", description = "Leave the team.")
+public final class TeamLeaveSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 

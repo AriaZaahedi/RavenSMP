@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public abstract class SubCommandHandler {
+public abstract class RavenSubCommandHandler {
 
-    private final SubCommand subCommand;
+    private final RavenSubCommand subCommand;
 
-    public SubCommandHandler() {
-        this.subCommand = getClass().getDeclaredAnnotation(SubCommand.class);
+    public RavenSubCommandHandler() {
+        this.subCommand = getClass().getDeclaredAnnotation(RavenSubCommand.class);
         Objects.requireNonNull(this.subCommand, "Subcommands must have annotation!");
     }
 

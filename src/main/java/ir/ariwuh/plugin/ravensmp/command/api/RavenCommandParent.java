@@ -13,42 +13,42 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class CommandParent extends Command {
+public abstract class RavenCommandParent extends RavenCommand {
 
-    private final @NotNull List<SubCommandHandler> subCommands;
+    private final @NotNull List<RavenSubCommandHandler> subCommands;
     private final @NotNull List<String> subCommandsLabels;
     private final @NotNull String version;
     private @Nullable String helpMessage;
 
-    public CommandParent(@NotNull String label,
-                         @Nullable String permission,
-                         @NotNull Collection<String> aliases) {
+    public RavenCommandParent(@NotNull String label,
+                              @Nullable String permission,
+                              @NotNull Collection<String> aliases) {
         super(label, permission, aliases);
         this.subCommands = new ArrayList<>();
         this.subCommandsLabels = new ArrayList<>();
         this.version = RavenSMPPlugin.instance().getPluginMeta().getVersion();
     }
 
-    public CommandParent(@NotNull String label,
-                         @Nullable String permission) {
+    public RavenCommandParent(@NotNull String label,
+                              @Nullable String permission) {
         this(label, permission, List.of());
     }
 
-    public CommandParent(@NotNull String label,
-                         @NotNull Collection<String> aliases) {
+    public RavenCommandParent(@NotNull String label,
+                              @NotNull Collection<String> aliases) {
         this(label, null, aliases);
     }
 
-    public CommandParent(@NotNull String label) {
+    public RavenCommandParent(@NotNull String label) {
         this(label, null, List.of());
     }
 
-    private void registerSubCommand(@NotNull SubCommandHandler subCommand) {
+    private void registerSubCommand(@NotNull RavenSubCommandHandler subCommand) {
         this.subCommands.add(subCommand);
         this.subCommandsLabels.add(subCommand.label().toLowerCase());
     }
 
-    public void registerSubCommands(@NotNull SubCommandHandler... subCommandsToRegister) {
+    public void registerSubCommands(@NotNull RavenSubCommandHandler... subCommandsToRegister) {
         Arrays.stream(subCommandsToRegister).forEach(this::registerSubCommand);
         this.helpMessage = buildHelpMessage(label(), this.version, this.subCommands);
     }
@@ -68,15 +68,15 @@ public abstract class CommandParent extends Command {
         return suggestSubCommand(this.subCommands, this.subCommandsLabels, player, arguments);
     }
 
-    private @Nullable SubCommandHandler findSubCommand(@NotNull List<SubCommandHandler> subCommands,
-                                                       @NotNull String label) {
+    private @Nullable RavenSubCommandHandler findSubCommand(@NotNull List<RavenSubCommandHandler> subCommands,
+                                                            @NotNull String label) {
         return subCommands.stream()
                 .filter(subExecutor -> subExecutor.label().equalsIgnoreCase(label))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void executeSubCommand(@NotNull List<SubCommandHandler> subCommands,
+    public void executeSubCommand(@NotNull List<RavenSubCommandHandler> subCommands,
                                   @NotNull Player player,
                                   @NotNull String[] arguments,
                                   @Nullable String helpMessage) {
@@ -99,7 +99,7 @@ public abstract class CommandParent extends Command {
         if (helpMessage != null) player.sendRichMessage(helpMessage);
     }
 
-    public @NotNull Collection<String> suggestSubCommand(@NotNull List<SubCommandHandler> subCommands,
+    public @NotNull Collection<String> suggestSubCommand(@NotNull List<RavenSubCommandHandler> subCommands,
                                                          @NotNull List<String> subCommandLabels,
                                                          @NotNull Player player,
                                                          @NotNull String[] arguments) {
@@ -117,8 +117,8 @@ public abstract class CommandParent extends Command {
 
     public @NotNull String buildHelpMessage(@NotNull String commandLabel,
                                             @NotNull String version,
-                                            @NotNull List<SubCommandHandler> subCommands,
-                                            @NotNull CommandParent.CommandColorScheme commandColorScheme) {
+                                            @NotNull List<RavenSubCommandHandler> subCommands,
+                                            @NotNull RavenCommandParent.CommandColorScheme commandColorScheme) {
         val stringBuilder = new StringBuilder()
                 .append("<newLine><").append(commandColorScheme.headerColor()).append(">")
                 .append(commandLabel.toUpperCase())
@@ -141,7 +141,7 @@ public abstract class CommandParent extends Command {
 
     public @NotNull String buildHelpMessage(@NotNull String commandLabel,
                                             @NotNull String version,
-                                            @NotNull List<SubCommandHandler> subCommands) {
+                                            @NotNull List<RavenSubCommandHandler> subCommands) {
         return buildHelpMessage(commandLabel, version, subCommands, CommandColorScheme.DEFAULT);
     }
 
