@@ -42,7 +42,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         val pluginSettings = this.pluginSettingsManager.pluginSettings();
 
-        this.teamTagManager = new TeamTagManager();
+        this.teamTagManager = new TeamTagManager(pluginSettings);
         this.teamManager = new TeamManager(pluginSettings, this.teamTagManager);
         this.teamInvitationManager = new TeamInvitationManager(
                 this, pluginSettings, this.teamTagManager, this.teamManager

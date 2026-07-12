@@ -2,9 +2,9 @@ package ir.ariwuh.plugin.ravensmp.manager.team;
 
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
+import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import lombok.val;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
@@ -23,14 +23,16 @@ public final class TeamTagManager {
     private static final @NotNull String DEFAULT_SMP_TEAM_SCOREBOARD_NAME = "zzz";
     private static final @NotNull String SMP_TEAM_PREFIX = "smp_";
 
-    private static final @NotNull NamedTextColor DEFAULT_NO_TEAM_COLOR = NamedTextColor.GRAY;
-
     private final @NotNull HashMap<String, Team> scoreboardTeams;
+
+    private final @NotNull PluginSettings pluginSettings;
 
     private final @NotNull Scoreboard scoreboard;
     private final @NotNull Team defaultScoreboardTeam;
 
-    public TeamTagManager() {
+    public TeamTagManager(@NotNull PluginSettings pluginSettings) {
+        this.pluginSettings = pluginSettings;
+
         this.scoreboardTeams = new HashMap<>();
 
         this.scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
@@ -69,8 +71,8 @@ public final class TeamTagManager {
         scoreboardTeam.setAllowFriendlyFire(teamOptions.friendlyFire());
     }
 
-    private void updateDefaultScoreboardTeamColor() {
-        this.defaultScoreboardTeam.color(DEFAULT_NO_TEAM_COLOR);
+    public void updateDefaultScoreboardTeamColor() {
+        this.defaultScoreboardTeam.color(this.pluginSettings.defaultNameTagColor());
     }
 
     public void addPlayerToDefaultScoreboardTeam(@NotNull OfflinePlayer player) {

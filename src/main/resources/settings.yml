@@ -1,4 +1,11 @@
 settings:
+  general:
+    # Default name tag color for teamless players on player-list (Default: "gray")
+    # Available colors:
+    # red, dark_red, blue, dark_blue, green, dark_green, aqua, dark_aqua,
+    # light_purple, dark_purple, gray, dark_gray,
+    # gold, yellow, white, black
+    default-name-tag-color: "gray"
   team:
     # Allowed team id regex input for team creation. (Default: "^[a-zA-Z0-9_]+$")
     allowed-id-regex: "^[a-zA-Z0-9_]+$"
