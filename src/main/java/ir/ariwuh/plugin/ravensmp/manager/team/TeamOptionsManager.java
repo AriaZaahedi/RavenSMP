@@ -17,6 +17,7 @@ public final class TeamOptionsManager {
 
     private final @NotNull PluginSettings pluginSettings;
 
+    private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
 
     public @NotNull RavenSMPTeamChangeOptionsStatus changeTeamOptions(@NotNull UUID playerId,
@@ -47,6 +48,9 @@ public final class TeamOptionsManager {
         currentOptions.homeLocation(testOptions.homeLocation());
         currentOptions.friendlyFire(testOptions.friendlyFire());
         currentOptions.chatMuted(testOptions.chatMuted());
+
+        this.teamTagManager.updateScoreboardTeam(playerTeam);
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
 
         return RavenSMPTeamChangeOptionsStatus.SUCCESSFUL;
     }

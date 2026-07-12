@@ -26,7 +26,7 @@ public final class TeamCreateSubcommand extends SubCommandHandler {
         }
 
         val teamId = arguments[0].toLowerCase();
-        switch (this.teamManager.createTeam(player.getUniqueId(), player.getName(), teamId)) {
+        switch (this.teamManager.createTeam(player, teamId)) {
             case SUCCESSFUL -> RavenMedia.sendMessage(
                     player,
                     RavenLanguagePath.MESSAGE_COMMAND_TEAM_CREATION_SUCCESS,

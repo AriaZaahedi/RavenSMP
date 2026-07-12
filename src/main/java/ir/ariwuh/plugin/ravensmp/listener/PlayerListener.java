@@ -3,6 +3,7 @@ package ir.ariwuh.plugin.ravensmp.listener;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,7 +19,9 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
-        this.teamManager.updateTeamAudience(event.getPlayer().getUniqueId());
+        val playerId = event.getPlayer().getUniqueId();
+        this.teamManager.updateTeamAudience(playerId);
+        this.teamManager.updateScoreboardTeamFor(playerId);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

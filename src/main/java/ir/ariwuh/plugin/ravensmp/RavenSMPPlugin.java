@@ -9,6 +9,7 @@ import ir.ariwuh.plugin.ravensmp.manager.PluginSettingsManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamInvitationManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamOptionsManager;
+import ir.ariwuh.plugin.ravensmp.manager.team.TeamTagManager;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.val;
@@ -24,6 +25,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
     private PluginSettingsManager pluginSettingsManager;
     private LanguageManager languageManager;
 
+    private TeamTagManager teamTagManager;
     private TeamManager teamManager;
     private TeamInvitationManager teamInvitationManager;
     private TeamOptionsManager teamOptionsManager;
@@ -40,9 +42,12 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         val pluginSettings = this.pluginSettingsManager.pluginSettings();
 
-        this.teamManager = new TeamManager(pluginSettings);
-        this.teamInvitationManager = new TeamInvitationManager(this, pluginSettings, this.teamManager);
-        this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamManager);
+        this.teamTagManager = new TeamTagManager();
+        this.teamManager = new TeamManager(pluginSettings, this.teamTagManager);
+        this.teamInvitationManager = new TeamInvitationManager(
+                this, pluginSettings, this.teamTagManager, this.teamManager
+        );
+        this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamTagManager, this.teamManager);
 
         getServer().getPluginManager().registerEvents(
                 new PlayerListener(this.languageManager, this.teamManager),
@@ -57,6 +62,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
+        this.teamTagManager.unregisterScoreboardTeams();
 
         this.languageManager.unloadLanguages();
     }

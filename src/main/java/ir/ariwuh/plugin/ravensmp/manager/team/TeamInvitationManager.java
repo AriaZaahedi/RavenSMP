@@ -29,6 +29,8 @@ public final class TeamInvitationManager {
 
     private final @NotNull RavenSMPPlugin plugin;
     private final @NotNull PluginSettings pluginSettings;
+
+    private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
 
     private final @NotNull HashMap<RavenSMPTeam, HashSet<UUID>> pendingTeamInvites = new HashMap<>();
@@ -167,6 +169,9 @@ public final class TeamInvitationManager {
 
         val teamMember = new SMPTeamMember(playerId, player.getName());
         targetTeam.addMember(teamMember);
+
+        this.teamTagManager.removePlayerFromDefaultScoreboardTeam(player);
+        this.teamTagManager.updateScoreboardTeamMembers(targetTeam);
 
         return RavenSMPTeamInvitationStatus.SUCCESSFUL;
     }

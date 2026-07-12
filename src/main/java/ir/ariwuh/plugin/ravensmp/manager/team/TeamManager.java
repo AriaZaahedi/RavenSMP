@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public final class TeamManager {
 
     private final @NotNull PluginSettings pluginSettings;
+    private final @NotNull TeamTagManager teamTagManager;
 
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
     private final @NotNull TimedHashSet<UUID> teamCreationCooldown = new TimedHashSet<>();
@@ -53,9 +54,20 @@ public final class TeamManager {
         teamMemberIds.forEach(this.teamHomeTeleportCooldown::remove);
     }
 
+    public void updateScoreboardTeamFor(@NotNull UUID playerId) {
+        val playerTeam = findTeamByPlayerId(playerId);
+        if (playerTeam == null) {
+            this.teamTagManager.addPlayerToDefaultScoreboardTeam(Bukkit.getOfflinePlayer(playerId));
+            return;
+        }
+
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+    }
+
     @Contract(pure = true)
-    public @NotNull RavenSMPTeamActionStatus createTeam(@NotNull UUID teamLeaderId, @NotNull String teamLeaderUsername,
-                                                        @NotNull String teamId) {
+    public @NotNull RavenSMPTeamActionStatus createTeam(@NotNull Player player, @NotNull String teamId) {
+        val teamLeaderId = player.getUniqueId();
+        val teamLeaderUsername = player.getName();
         if (findTeamByPlayerId(teamLeaderId) != null) return RavenSMPTeamActionStatus.PLAYER_HAS_TEAM;
         if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex())) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
         if (teamId.length() > this.pluginSettings.maxTeamIdLength()) return RavenSMPTeamActionStatus.TEAM_ID_TOO_LONG;
@@ -71,6 +83,11 @@ public final class TeamManager {
         val teamLeader = new SMPTeamMember(teamLeaderId, teamLeaderUsername);
         val newTeam = new SMPTeam(teamId, teamLeader);
 
+        this.teamTagManager.removePlayerFromDefaultScoreboardTeam(player);
+        this.teamTagManager.createTeamScoreboardForTeam(newTeam.teamId());
+        this.teamTagManager.updateScoreboardTeam(newTeam);
+        this.teamTagManager.updateScoreboardTeamMembers(newTeam);
+
         this.teams.add(newTeam);
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
@@ -84,6 +101,13 @@ public final class TeamManager {
         if (!playerTeam.teamId().equalsIgnoreCase(teamId)) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
 
         playerTeam.sendLocalizedMessage(RavenLanguagePath.BROADCAST_TEAM_DISBAND);
+
+        this.teamTagManager.removeScoreboardTeam(teamId);
+        playerTeam.teamMembers().stream()
+                .map(RavenSMPTeamMember::playerId)
+                .map(Bukkit::getOfflinePlayer)
+                .forEach(this.teamTagManager::addPlayerToDefaultScoreboardTeam);
+
         this.teams.remove(playerTeam);
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
@@ -96,6 +120,10 @@ public final class TeamManager {
         if (playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_IS_LEADER;
 
         playerTeam.removeMember(playerId);
+
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+        this.teamTagManager.addPlayerToDefaultScoreboardTeam(Bukkit.getOfflinePlayer(playerId));
+
         playerTeam.sendLocalizedMessage(
                 RavenLanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
                 RavenPlaceholderLike.builder()
@@ -119,6 +147,9 @@ public final class TeamManager {
         if (!playerTeam.isMember(targetId)) return RavenSMPTeamActionStatus.TARGET_NOT_IN_TEAM;
 
         playerTeam.removeMember(targetId);
+
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+        this.teamTagManager.addPlayerToDefaultScoreboardTeam(targetOfflinePlayer);
 
         playerTeam.sendLocalizedMessage(
                 RavenLanguagePath.BROADCAST_TEAM_KICK,
