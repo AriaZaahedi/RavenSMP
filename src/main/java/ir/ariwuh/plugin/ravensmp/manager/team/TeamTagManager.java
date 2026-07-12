@@ -77,6 +77,10 @@ public final class TeamTagManager {
 
     public void addPlayerToDefaultScoreboardTeam(@NotNull OfflinePlayer player) {
         this.defaultScoreboardTeam.addPlayer(player);
+        val onlinePlayer = player.getPlayer();
+        if (onlinePlayer != null) onlinePlayer.displayName(
+                onlinePlayer.name().color(this.pluginSettings.defaultNameTagColor())
+        );
     }
 
     public void removePlayerFromDefaultScoreboardTeam(@NotNull OfflinePlayer player) {
