@@ -80,6 +80,10 @@ message:
         error:
           on-cooldown: "<red>Wait <gold>30s</gold> between uses!"
           not-exists: "<red>Team home has not been set yet!"
+      chat:
+        format: "<green>[TEAM] <yellow><player_name><white>: <message>"
+        error:
+          muted: "<red>Team chat is muted!"
       option:
         usage: "<red>Usage: /team options <option> <value><newLine><red>Available options: <gold><options>"
         usage-separator-format: "<red>, <gold>"

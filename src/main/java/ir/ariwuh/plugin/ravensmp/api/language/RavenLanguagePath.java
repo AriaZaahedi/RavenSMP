@@ -86,6 +86,10 @@ public enum RavenLanguagePath {
     MESSAGE_COMMAND_TEAM_HOME_ERROR_NOT_EXISTS("message.command.team.home.error.not-exists"),
     MESSAGE_COMMAND_TEAM_HOME_ERROR_ON_COOLDOWN("message.command.team.home.error.on-cooldown"),
 
+    // --- Chat ---
+    MESSAGE_COMMAND_TEAM_CHAT_ERROR_MUTED("message.command.team.chat.error.muted"),
+    MESSAGE_COMMAND_TEAM_CHAT_FORMAT("message.command.team.chat.format"),
+
     // -- Option ---
     // Usage
     MESSAGE_COMMAND_TEAM_OPTIONS_USAGE("message.command.team.option.usage"),
