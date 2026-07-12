@@ -41,6 +41,7 @@ public final class PluginSettingsManager {
         val config = this.pluginSettingsConfigFile.config();
 
         val defaultNameTagColor = config.getString("settings.general.default-name-tag-color", "gray");
+        val globalChatFormat = config.getString("settings.general.global-chat-format", "<display_name><white>: <message>");
 
         val allowedTeamIdRegex = config.getString("settings.team.allowed-id-regex", "^[a-zA-Z0-9_]+$");
         val maxTeamIdLength = config.getInt("settings.team.id-max-length", 12);
@@ -55,6 +56,7 @@ public final class PluginSettingsManager {
         this.pluginSettings.defaultNameTagColor(
                 StringUtility.stringToNamedTextColorOrDefault(defaultNameTagColor, NamedTextColor.GRAY)
         );
+        this.pluginSettings.globalChatFormat(globalChatFormat);
 
         this.pluginSettings.allowedTeamIdRegex(allowedTeamIdRegex);
         this.pluginSettings.maxTeamIdLength(maxTeamIdLength);

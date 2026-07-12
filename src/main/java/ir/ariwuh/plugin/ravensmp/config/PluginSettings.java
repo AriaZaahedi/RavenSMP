@@ -12,6 +12,7 @@ public final class PluginSettings {
 
     // === General ===
     private NamedTextColor defaultNameTagColor;
+    private String globalChatFormat;
 
     // === Team Settings ===
     private String allowedTeamIdRegex;

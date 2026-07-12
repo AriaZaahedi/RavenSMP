@@ -3,6 +3,7 @@ package ir.ariwuh.plugin.ravensmp;
 import ir.ariwuh.plugin.ravensmp.command.LanguageCommand;
 import ir.ariwuh.plugin.ravensmp.command.SMPCommand;
 import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
+import ir.ariwuh.plugin.ravensmp.listener.ChatListener;
 import ir.ariwuh.plugin.ravensmp.listener.PlayerListener;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.manager.PluginSettingsManager;
@@ -13,7 +14,11 @@ import ir.ariwuh.plugin.ravensmp.manager.team.TeamTagManager;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.val;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 @Accessors(fluent = true)
 @Getter
@@ -49,9 +54,9 @@ public final class RavenSMPPlugin extends JavaPlugin {
         );
         this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamTagManager, this.teamManager);
 
-        getServer().getPluginManager().registerEvents(
-                new PlayerListener(this.languageManager, this.teamManager),
-                this
+        registerListeners(
+                new ChatListener(pluginSettings),
+                new PlayerListener(this.languageManager, this.teamManager)
         );
         registerCommands();
     }
@@ -69,6 +74,12 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
     public void disablePlugin() {
         getServer().getPluginManager().disablePlugin(this);
+    }
+
+    private void registerListeners(@NotNull Listener... listeners) {
+        val pluginManager = getServer().getPluginManager();
+        Arrays.stream(listeners)
+                .forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
     private void registerCommands() {
