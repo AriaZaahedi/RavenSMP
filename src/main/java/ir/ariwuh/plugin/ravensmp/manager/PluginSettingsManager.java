@@ -53,6 +53,7 @@ public final class PluginSettingsManager {
         val teamCreationCooldownTimeSeconds = config.getInt("settings.team.creation-cooldown-time-seconds", 60);
         val teamInviteExpirationTimeSeconds = config.getInt("settings.team.invite-expiration-time-seconds", 60);
 
+        val teamHomeTeleportationCooldownRemovalOnMemberUpdate = config.getBoolean("settings.team.home.teleportation-cooldown-removal-on-member-update", true);
         val teamHomeTeleportCooldownTimeSeconds = config.getInt("settings.team.home.teleport-cooldown-time-seconds", 30);
         val blacklistedTeamHomeWorlds = config.getStringList("settings.team.home.blacklisted-worlds");
 
@@ -71,6 +72,7 @@ public final class PluginSettingsManager {
         this.pluginSettings.teamCreationCooldownTimeSeconds(teamCreationCooldownTimeSeconds);
         this.pluginSettings.teamInviteExpirationTimeSeconds(teamInviteExpirationTimeSeconds);
 
+        this.pluginSettings.teamHomeTeleportationCooldownRemovalOnMemberUpdate(teamHomeTeleportationCooldownRemovalOnMemberUpdate);
         this.pluginSettings.teamHomeTeleportCooldownTimeSeconds(teamHomeTeleportCooldownTimeSeconds);
         this.pluginSettings.blacklistedTeamHomeWorlds(blacklistedTeamHomeWorlds);
     }

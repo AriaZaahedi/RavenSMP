@@ -137,7 +137,11 @@ public final class TeamManager {
         playerTeam.teamMembers().stream()
                 .map(RavenSMPTeamMember::playerId)
                 .map(Bukkit::getOfflinePlayer)
-                .forEach(this.teamTagManager::addPlayerToDefaultScoreboardTeam);
+                .forEach(offlinePlayer -> {
+                    this.teamTagManager.addPlayerToDefaultScoreboardTeam(offlinePlayer);
+                    if (this.pluginSettings.teamHomeTeleportationCooldownRemovalOnMemberUpdate())
+                        this.teamHomeTeleportCooldown.remove(offlinePlayer.getUniqueId());
+                });
 
         this.teams.remove(playerTeam);
         this.teamDao.delete(teamId);
@@ -152,6 +156,9 @@ public final class TeamManager {
         if (playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_IS_LEADER;
 
         playerTeam.removeMember(playerId);
+
+        if (this.pluginSettings.teamHomeTeleportationCooldownRemovalOnMemberUpdate())
+            this.teamHomeTeleportCooldown.remove(playerId);
 
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
         this.teamTagManager.addPlayerToDefaultScoreboardTeam(Bukkit.getOfflinePlayer(playerId));
@@ -181,6 +188,11 @@ public final class TeamManager {
         if (!playerTeam.isMember(targetId)) return RavenSMPTeamActionStatus.TARGET_NOT_IN_TEAM;
 
         playerTeam.removeMember(targetId);
+
+        if (this.pluginSettings.teamHomeTeleportationCooldownRemovalOnMemberUpdate())
+            this.teamHomeTeleportCooldown.remove(targetId);
+
+        this.teamHomeTeleportCooldown.remove(playerId);
 
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
         this.teamTagManager.addPlayerToDefaultScoreboardTeam(targetOfflinePlayer);

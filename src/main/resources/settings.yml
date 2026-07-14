@@ -30,6 +30,9 @@ settings:
     home:
       # The time (in seconds) player has to wait to teleport to team home again. (Default: 30)
       teleport-cooldown-time-seconds: 30
+      # Remove team home teleportation cooldown on player kick, player leave, and team disband. (Default: true)
+      # Disable this feature if you think players abuse it.
+      teleportation-cooldown-removal-on-member-update: true
       # List of worlds team leader cannot set home inside.
       blacklisted-worlds:
         - "world_the_end"

@@ -27,6 +27,7 @@ public final class PluginSettings {
     private int teamInviteExpirationTimeSeconds;
 
     private int teamHomeTeleportCooldownTimeSeconds;
+    private boolean teamHomeTeleportationCooldownRemovalOnMemberUpdate;
     private List<String> blacklistedTeamHomeWorlds;
 
 }
