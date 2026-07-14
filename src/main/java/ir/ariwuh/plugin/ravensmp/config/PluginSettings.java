@@ -10,6 +10,10 @@ import java.util.List;
 @Data
 public final class PluginSettings {
 
+    // === Database Settings ===
+    private String databaseUri;
+    private String databaseName;
+
     // === General ===
     private NamedTextColor defaultNameTagColor;
     private String globalChatFormat;

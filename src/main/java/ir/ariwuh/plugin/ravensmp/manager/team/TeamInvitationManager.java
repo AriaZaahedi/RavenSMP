@@ -6,7 +6,9 @@ import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamInvitationStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
+import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
 import ir.ariwuh.plugin.ravensmp.task.PlayerTeamInvitationTask;
+import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,8 @@ public final class TeamInvitationManager {
 
     private final @NotNull RavenSMPPlugin plugin;
     private final @NotNull PluginSettings pluginSettings;
+
+    private final @NotNull SMPTeamDao teamDao;
 
     private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
@@ -115,6 +119,7 @@ public final class TeamInvitationManager {
                                     .append("member_name", targetUsername)
                                     .build()
                     );
+                    this.teamDao.update((SMPTeam) playerTeam);
                 },
                 () -> {
                     pendingTeamInvitations(playerTeam).remove(targetId);

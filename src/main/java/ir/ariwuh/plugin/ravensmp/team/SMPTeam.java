@@ -8,6 +8,7 @@ import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,25 +17,32 @@ import java.util.*;
 @Accessors(fluent = true)
 public final class SMPTeam implements RavenSMPTeam {
 
+    @BsonId
     @Getter
-    private final @NotNull String teamId;
+    @Setter
+    private @NotNull String teamId;
     @Getter
     @Setter
     private @NotNull RavenSMPTeamMember teamLeader;
 
     private final @NotNull HashSet<RavenSMPTeamMember> teamMembers;
     @Getter
-    private final @NotNull RavenSMPTeamOptions teamOptions;
+    @Setter
+    private @NotNull RavenSMPTeamOptions teamOptions;
 
     @Getter
-    private SMPTeamAudience teamAudience;
+    private transient SMPTeamAudience teamAudience;
+
+    public SMPTeam() {
+        this.teamMembers = new HashSet<>();
+        this.teamOptions = new SMPTeamOptions(this);
+    }
 
     public SMPTeam(@NotNull String teamId, @NotNull SMPTeamMember teamLeader) {
         this.teamId = teamId;
         this.teamLeader = teamLeader;
 
-        this.teamMembers = new HashSet<>();
-        this.teamOptions = new SMPTeamOptions(this);
+        this();
 
         addMember(teamLeader);
     }

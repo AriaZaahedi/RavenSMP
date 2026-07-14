@@ -2,6 +2,7 @@ package ir.ariwuh.plugin.ravensmp.manager.team;
 
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamChangeOptionsStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
+import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamOptionsDao;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -16,6 +17,8 @@ import java.util.UUID;
 public final class TeamOptionsManager {
 
     private final @NotNull PluginSettings pluginSettings;
+
+    private final @NotNull SMPTeamOptionsDao teamOptionsDao;
 
     private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
@@ -51,6 +54,8 @@ public final class TeamOptionsManager {
 
         this.teamTagManager.updateScoreboardTeam(playerTeam);
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+
+        this.teamOptionsDao.update(currentOptions);
 
         return RavenSMPTeamChangeOptionsStatus.SUCCESSFUL;
     }

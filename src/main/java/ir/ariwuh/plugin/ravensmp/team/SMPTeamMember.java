@@ -1,17 +1,22 @@
 package ir.ariwuh.plugin.ravensmp.team;
 
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 @Accessors(fluent = true)
-@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString(of = "playerId")
 public final class SMPTeamMember implements RavenSMPTeamMember {
 
-    private final @NotNull UUID playerId;
+    private @NotNull UUID playerId;
     private @NotNull String username;
 
 }

@@ -40,6 +40,9 @@ public final class PluginSettingsManager {
         this.pluginSettingsConfigFile.load();
         val config = this.pluginSettingsConfigFile.config();
 
+        val databaseUri = config.getString("settings.database.uri", "mongodb://admin:admin@localhost:27017/");
+        val databaseName = config.getString("settings.database.name", "smp");
+
         val defaultNameTagColor = config.getString("settings.general.default-name-tag-color", "gray");
         val globalChatFormat = config.getString("settings.general.global-chat-format", "<display_name><white>: <message>");
 
@@ -52,6 +55,9 @@ public final class PluginSettingsManager {
 
         val teamHomeTeleportCooldownTimeSeconds = config.getInt("settings.team.home.teleport-cooldown-time-seconds", 30);
         val blacklistedTeamHomeWorlds = config.getStringList("settings.team.home.blacklisted-worlds");
+
+        this.pluginSettings.databaseUri(databaseUri);
+        this.pluginSettings.databaseName(databaseName);
 
         this.pluginSettings.defaultNameTagColor(
                 StringUtility.stringToNamedTextColorOrDefault(defaultNameTagColor, NamedTextColor.GRAY)

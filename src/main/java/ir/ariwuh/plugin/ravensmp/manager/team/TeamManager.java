@@ -6,6 +6,7 @@ import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamActionStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
+import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
@@ -28,11 +29,20 @@ import java.util.stream.Collectors;
 public final class TeamManager {
 
     private final @NotNull PluginSettings pluginSettings;
+
+    private final @NotNull SMPTeamDao teamDao;
+
     private final @NotNull TeamTagManager teamTagManager;
 
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
     private final @NotNull TimedHashSet<UUID> teamCreationCooldown = new TimedHashSet<>();
     private final @NotNull TimedHashSet<UUID> teamHomeTeleportCooldown = new TimedHashSet<>();
+
+    public void loadTeams() {
+        val loadedTeams = this.teamDao.findAll();
+        this.teams.addAll(loadedTeams);
+        loadedTeams.forEach(this.teamTagManager::updateScoreboardTeam);
+    }
 
     public void unloadTeams() {
         this.teams.clear();
@@ -89,6 +99,7 @@ public final class TeamManager {
         this.teamTagManager.updateScoreboardTeamMembers(newTeam);
 
         this.teams.add(newTeam);
+        this.teamDao.insert(newTeam);
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }
@@ -109,6 +120,7 @@ public final class TeamManager {
                 .forEach(this.teamTagManager::addPlayerToDefaultScoreboardTeam);
 
         this.teams.remove(playerTeam);
+        this.teamDao.delete(teamId);
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }
@@ -123,6 +135,8 @@ public final class TeamManager {
 
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
         this.teamTagManager.addPlayerToDefaultScoreboardTeam(Bukkit.getOfflinePlayer(playerId));
+
+        this.teamDao.update((SMPTeam) playerTeam);
 
         playerTeam.sendLocalizedMessage(
                 RavenLanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
@@ -150,6 +164,8 @@ public final class TeamManager {
 
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
         this.teamTagManager.addPlayerToDefaultScoreboardTeam(targetOfflinePlayer);
+
+        this.teamDao.update((SMPTeam) playerTeam);
 
         playerTeam.sendLocalizedMessage(
                 RavenLanguagePath.BROADCAST_TEAM_KICK,
@@ -192,6 +208,7 @@ public final class TeamManager {
 
         val newLeader = new SMPTeamMember(targetId, targetPlayer.getName());
         ((SMPTeam) playerTeam).teamLeader(newLeader);
+        this.teamDao.update((SMPTeam) playerTeam);
 
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }
