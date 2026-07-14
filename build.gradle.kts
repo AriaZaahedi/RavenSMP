@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ir.ariwuh.plugin.ravensmp"
-version = "0.1"
+version = "0.2"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
