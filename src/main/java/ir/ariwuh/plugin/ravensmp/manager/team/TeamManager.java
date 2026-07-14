@@ -1,5 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.manager.team;
 
+import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public final class TeamManager {
 
+    private final RavenSMPPlugin plugin;
     private final @NotNull PluginSettings pluginSettings;
 
     private final @NotNull SMPTeamDao teamDao;
@@ -35,6 +37,7 @@ public final class TeamManager {
     private final @NotNull TeamTagManager teamTagManager;
 
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
+
     private final @NotNull TimedHashSet<UUID> teamCreationCooldown = new TimedHashSet<>();
     private final @NotNull TimedHashSet<UUID> teamHomeTeleportCooldown = new TimedHashSet<>();
 
@@ -55,15 +58,6 @@ public final class TeamManager {
         ((SMPTeam) playerTeam).updateTeamAudience();
     }
 
-    public void removeTeamHomeCooldownForTeam(@NotNull RavenSMPTeam playerTeam) {
-        val teamMemberIds = playerTeam.teamMembers().stream()
-                .map(RavenSMPTeamMember::playerId)
-                .filter(this.teamHomeTeleportCooldown::contains)
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        teamMemberIds.forEach(this.teamHomeTeleportCooldown::remove);
-    }
-
     public void updateScoreboardTeamFor(@NotNull UUID playerId) {
         val playerTeam = findTeamByPlayerId(playerId);
         if (playerTeam == null) {
@@ -72,6 +66,32 @@ public final class TeamManager {
         }
 
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+    }
+
+    public void updateTeamMemberUsername(@NotNull UUID playerId, @NotNull String username) {
+        val playerTeam = findTeamByPlayerId(playerId);
+        if (playerTeam == null) return;
+
+        Bukkit.getScheduler().runTaskAsynchronously(
+                this.plugin,
+                () -> playerTeam.teamMembers().stream()
+                        .filter(teamMember -> teamMember.playerId().equals(playerId))
+                        .filter(teamMember -> !teamMember.username().equalsIgnoreCase(username))
+                        .findFirst()
+                        .ifPresent(teamMember -> {
+                            ((SMPTeamMember) teamMember).username(username);
+                            this.teamDao.update((SMPTeam) playerTeam);
+                        })
+        );
+    }
+
+    public void removeTeamHomeCooldownForTeam(@NotNull RavenSMPTeam playerTeam) {
+        val teamMemberIds = playerTeam.teamMembers().stream()
+                .map(RavenSMPTeamMember::playerId)
+                .filter(this.teamHomeTeleportCooldown::contains)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        teamMemberIds.forEach(this.teamHomeTeleportCooldown::remove);
     }
 
     @Contract(pure = true)

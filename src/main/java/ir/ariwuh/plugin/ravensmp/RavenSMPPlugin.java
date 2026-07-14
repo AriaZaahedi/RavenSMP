@@ -61,7 +61,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
         this.teamOptionsDao = new SMPTeamOptionsDao(this.databaseManager);
 
         this.teamTagManager = new TeamTagManager(pluginSettings);
-        this.teamManager = new TeamManager(pluginSettings, this.teamDao, this.teamTagManager);
+        this.teamManager = new TeamManager(this, pluginSettings, this.teamDao, this.teamTagManager);
         this.teamManager.loadTeams();
         this.teamInvitationManager = new TeamInvitationManager(
                 this, pluginSettings, this.teamDao, this.teamTagManager, this.teamManager

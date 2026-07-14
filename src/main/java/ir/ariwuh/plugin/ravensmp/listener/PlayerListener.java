@@ -20,8 +20,11 @@ public final class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
         val playerId = event.getPlayer().getUniqueId();
+        val playerName = event.getPlayer().getName();
+
         this.teamManager.updateTeamAudience(playerId);
         this.teamManager.updateScoreboardTeamFor(playerId);
+        this.teamManager.updateTeamMemberUsername(playerId, playerName);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
