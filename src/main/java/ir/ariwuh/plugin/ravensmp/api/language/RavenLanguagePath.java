@@ -78,6 +78,7 @@ public enum RavenLanguagePath {
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DISABLED("message.command.team.invitation.error.target.invite-disabled"),
 
     // --- Leave ---
+    MESSAGE_COMMAND_TEAM_LEAVE_SUCCESS("message.command.team.leave.success"),
     MESSAGE_COMMAND_TEAM_LEAVE_ERROR_IS_LEADER("message.command.team.leave.error.is-leader"),
 
     // --- Kick ---

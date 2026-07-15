@@ -75,6 +75,7 @@ message:
             invite-disabled: "<red>Target has their team invites disabled."
             invite-declined: "<yellow><target_name> <red>has declined your team request."
       leave:
+        success: "<yellow>You have left your team."
         error:
           is-leader: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
       kick:
