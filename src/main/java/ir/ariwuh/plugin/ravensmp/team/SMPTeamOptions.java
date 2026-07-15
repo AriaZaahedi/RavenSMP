@@ -35,6 +35,10 @@ public final class SMPTeamOptions implements RavenSMPTeamOptions {
         this.tagName = smpTeam.teamId();
     }
 
+    public @NotNull String teamDisplayName() {
+        return tagColorId() + this.tagName;
+    }
+
     public @NotNull String tagColorId() {
         return "<" + this.tagColor + ">";
     }

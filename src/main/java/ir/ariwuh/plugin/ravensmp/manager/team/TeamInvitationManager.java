@@ -11,6 +11,7 @@ import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
 import ir.ariwuh.plugin.ravensmp.task.PlayerTeamInvitationTask;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
+import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -95,6 +96,7 @@ public final class TeamInvitationManager {
                     RavenPlaceholderLike.builder()
                             .append("team_leader_name", teamLeader.getName())
                             .append("team_id", playerTeam.teamId())
+                            .append("team_display_name", ((SMPTeamOptions) playerTeam.teamOptions()).teamDisplayName())
                             .build()
             );
         }

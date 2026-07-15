@@ -109,7 +109,7 @@ broadcast:
     transfer: "<newline><team_broadcast_prefix><green><old_leader><yellow> has transferred the team leader to <aqua><new_leader></aqua>.<newline>"
     invitation:
       members: "<newline><team_broadcast_prefix><aqua><team_leader_name> <yellow>has invited <green><target_name></green> to join the team.<newline>"
-      target: "<newline><yellow><aqua><team_leader_name></aqua> has invited you to join their team!<newline>You have <red>60</red> seconds to accept. <gold><hover:show_text:'<gold>Click to accept'><click:run_command:'/team accept <team_id>'><gold>Click here to join!</click><newline>"
+      target: "<newline><yellow><aqua><team_leader_name></aqua> has invited you to join <team_display_name> <yellow>team!<newline>You have <red>60</red> seconds to accept. <gold><hover:show_text:'<gold>Click to accept'><click:run_command:'/team accept <team_id>'><gold>Click here to join!</click><newline>"
       expired: "<red>Your team request with <yellow><target_name></yellow> has expired."
       expired-target: "<red>Your invitation from <yellow><team_leader_name></yellow> has expired."
     option:
