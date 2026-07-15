@@ -14,6 +14,7 @@ message:
         no-permission: "<red>You are not allowed to do this!"
         exception: "<red>Failed to execute <command_label> command. Please contact an admin to solve this issue."
         player-not-found: "<red>Target player is offline."
+        account-not-found: "<red>Failed to find your account. Please rejoin the server."
 
     # language command messages
     language:

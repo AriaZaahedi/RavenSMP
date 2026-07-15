@@ -66,8 +66,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
         this.teamDao = new SMPTeamDao(this.databaseManager);
         this.teamOptionsDao = new SMPTeamOptionsDao(this.databaseManager);
 
-        this.accountDao = new SMPAccountDao(this.databaseManager);
-        this.accountManager = new AccountManager(this.accountDao);
+        this.accountDao = new SMPAccountDao(this.databaseManager, this.languageManager);
+        this.accountManager = new AccountManager(this.languageManager, this.accountDao);
 
         this.teamTagManager = new TeamTagManager(pluginSettings);
         this.teamManager = new TeamManager(this, pluginSettings, this.teamDao, this.teamTagManager);
@@ -112,7 +112,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        new LanguageCommand(this.languageManager);
+        new LanguageCommand(this, this.languageManager, this.accountDao, this.accountManager);
         new SettingsCommand(this);
         new SMPCommand(this);
         new TeamCommand(this);

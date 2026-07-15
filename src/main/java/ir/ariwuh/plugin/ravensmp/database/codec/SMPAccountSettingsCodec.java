@@ -9,7 +9,6 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 public final class SMPAccountSettingsCodec implements Codec<SMPAccountSettings> {
 
@@ -25,7 +24,7 @@ public final class SMPAccountSettingsCodec implements Codec<SMPAccountSettings> 
     }
 
     @Override
-    public @NonNull SMPAccountSettings decode(@NotNull BsonReader reader,
+    public @NotNull SMPAccountSettings decode(@NotNull BsonReader reader,
                                               @NotNull DecoderContext decoderContext) {
         reader.readStartDocument();
 

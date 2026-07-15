@@ -1,6 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.account;
 
 import ir.ariwuh.plugin.ravensmp.api.account.RavenAccount;
+import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguage;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,9 @@ public final class SMPAccount implements RavenAccount {
 
     @Setter
     private @NotNull String username;
+
+    @Setter
+    private @UnknownNullability RavenLanguage language;
 
     @Setter
     private transient @NotNull SMPAccountSettings accountSettings;

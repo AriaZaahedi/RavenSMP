@@ -20,6 +20,7 @@ public enum RavenLanguagePath {
     MESSAGE_COMMAND_GENERAL_ERROR_NO_PERMISSION("message.command.general.error.no-permission"),
     MESSAGE_COMMAND_GENERAL_ERROR_EXCEPTION("message.command.general.error.exception"),
     MESSAGE_COMMAND_GENERAL_ERROR_PLAYER_OFFLINE("message.command.general.error.player-not-found"),
+    MESSAGE_COMMAND_GENERAL_ERROR_ACCOUNT_NOT_FOUND("message.command.general.error.account-not-found"),
 
     // > Language
     MESSAGE_COMMAND_LANGUAGE_USAGE("message.command.language.usage"),

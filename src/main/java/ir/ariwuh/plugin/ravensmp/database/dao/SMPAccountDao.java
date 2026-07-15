@@ -7,6 +7,7 @@ import ir.ariwuh.plugin.ravensmp.account.SMPAccount;
 import ir.ariwuh.plugin.ravensmp.database.codec.SMPAccountCodec;
 import ir.ariwuh.plugin.ravensmp.database.codec.SMPAccountSettingsCodec;
 import ir.ariwuh.plugin.ravensmp.manager.DatabaseManager;
+import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import lombok.val;
 import org.bson.BsonBinary;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -21,12 +22,15 @@ public final class SMPAccountDao implements IDao<SMPAccount, UUID> {
 
     private final @NotNull MongoCollection<SMPAccount> collection;
 
-    public SMPAccountDao(@NotNull DatabaseManager databaseManager) {
+    public SMPAccountDao(@NotNull DatabaseManager databaseManager, @NotNull LanguageManager languageManager) {
         val accountSettingsCodec = new SMPAccountSettingsCodec();
         this.collection = databaseManager.database()
                 .getCollection("accounts", SMPAccount.class)
                 .withCodecRegistry(CodecRegistries.fromRegistries(
-                        CodecRegistries.fromCodecs(new SMPAccountCodec(accountSettingsCodec), accountSettingsCodec),
+                        CodecRegistries.fromCodecs(
+                                new SMPAccountCodec(languageManager, accountSettingsCodec),
+                                accountSettingsCodec
+                        ),
                         DatabaseManager.DEFAULT_CODEC_REGISTRIES
                 ));
     }
@@ -42,6 +46,7 @@ public final class SMPAccountDao implements IDao<SMPAccount, UUID> {
                 Filters.eq("_id", new BsonBinary(account.accountId())),
                 Updates.combine(
                         Updates.set("username", account.username()),
+                        Updates.set("languageId", account.language().id()),
                         Updates.set("settings", account.accountSettings())
                 )
         );

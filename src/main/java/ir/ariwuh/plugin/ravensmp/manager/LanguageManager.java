@@ -1,14 +1,15 @@
 package ir.ariwuh.plugin.ravensmp.manager;
 
 import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
-import ir.ariwuh.plugin.ravensmp.config.PluginConfigFile;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguage;
+import ir.ariwuh.plugin.ravensmp.config.PluginConfigFile;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.val;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.File;
 import java.util.*;
@@ -26,7 +27,7 @@ public final class LanguageManager {
     private final @NotNull HashMap<UUID, RavenLanguage> playerLanguageMap;
 
     @Getter
-    private @Nullable RavenLanguage defaultLanguage;
+    private @UnknownNullability RavenLanguage defaultLanguage;
 
     public LanguageManager(@NotNull RavenSMPPlugin plugin) {
         this.plugin = plugin;
@@ -167,7 +168,6 @@ public final class LanguageManager {
         this.playerLanguageMap.remove(playerId);
     }
 
-    @Contract(pure = true)
     public boolean updatePlayerLanguage(@NotNull UUID playerId, @NotNull RavenLanguage language) {
         if (this.playerLanguageMap.getOrDefault(playerId, this.defaultLanguage).equals(language)) return false;
         this.playerLanguageMap.put(playerId, language);
@@ -180,6 +180,14 @@ public final class LanguageManager {
                 .filter(language -> language.id().equalsIgnoreCase(languageId))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Contract(pure = true)
+    public @NotNull RavenLanguage findLanguageByIdElseDefault(@NotNull String languageId) {
+        return this.languages.stream()
+                .filter(language -> language.id().equalsIgnoreCase(languageId))
+                .findFirst()
+                .orElse(this.defaultLanguage);
     }
 
     @Contract(pure = true)
