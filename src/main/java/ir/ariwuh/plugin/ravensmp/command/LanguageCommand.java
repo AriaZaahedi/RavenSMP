@@ -1,6 +1,5 @@
 package ir.ariwuh.plugin.ravensmp.command;
 
-import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguage;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
@@ -9,6 +8,7 @@ import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
+import ir.ariwuh.plugin.ravensmp.utility.RavenUtility;
 import lombok.val;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -19,18 +19,14 @@ import java.util.List;
 
 public final class LanguageCommand extends RavenCommand {
 
-    private final @NotNull RavenSMPPlugin plugin;
-
     private final @NotNull LanguageManager languageManager;
 
     private final @NotNull SMPAccountDao accountDao;
     private final @NotNull AccountManager accountManager;
 
-    public LanguageCommand(@NotNull RavenSMPPlugin plugin,
-                           @NotNull LanguageManager languageManager,
+    public LanguageCommand(@NotNull LanguageManager languageManager,
                            @NotNull SMPAccountDao accountDao, @NotNull AccountManager accountManager) {
         super("language");
-        this.plugin = plugin;
         this.languageManager = languageManager;
 
         this.accountDao = accountDao;
@@ -73,9 +69,7 @@ public final class LanguageCommand extends RavenCommand {
 
         if (this.languageManager.updatePlayerLanguage(playerId, language)) {
             RavenMedia.sendMessage(player, RavenLanguagePath.MESSAGE_COMMAND_LANGUAGE_PLAYER_UPDATED);
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(
-                    this.plugin,
-                    () -> {
+            RavenUtility.runAsync(() -> {
                         account.language(language);
                         accountDao.update(account);
                     }

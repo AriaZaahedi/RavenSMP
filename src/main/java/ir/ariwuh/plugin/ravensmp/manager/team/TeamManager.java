@@ -1,6 +1,5 @@
 package ir.ariwuh.plugin.ravensmp.manager.team;
 
-import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
@@ -11,6 +10,7 @@ import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
+import ir.ariwuh.plugin.ravensmp.utility.RavenUtility;
 import ir.ariwuh.plugin.ravensmp.utility.TimedHashSet;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public final class TeamManager {
 
-    private final RavenSMPPlugin plugin;
     private final @NotNull PluginSettings pluginSettings;
 
     private final @NotNull SMPTeamDao teamDao;
@@ -72,8 +71,7 @@ public final class TeamManager {
         val playerTeam = findTeamByPlayerId(playerId);
         if (playerTeam == null) return;
 
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(
-                this.plugin,
+        RavenUtility.runAsync(
                 () -> playerTeam.teamMembers().stream()
                         .filter(teamMember -> teamMember.playerId().equals(playerId))
                         .filter(teamMember -> !teamMember.username().equalsIgnoreCase(username))

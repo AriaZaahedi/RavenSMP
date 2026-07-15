@@ -12,7 +12,7 @@ public final class SettingsCommand extends RavenCommandParent {
 
         registerSubCommands(
                 new SettingsToggleTeamInvitesSubcommand(
-                        plugin, plugin.accountDao(), plugin.accountManager()
+                        plugin.accountDao(), plugin.accountManager()
                 )
         );
     }

@@ -105,10 +105,17 @@ public enum RavenLanguagePath {
     MESSAGE_COMMAND_TEAM_OPTIONS_ERROR_UNKNOWN("message.command.team.option.error.unknown"),
 
     // === BROADCASTING ===
+    // Server
+    BROADCAST_SERVER_GENERAL_PREFIX("broadcast.server.general.prefix"),
+    BROADCAST_SERVER_GENERAL_PLAYER_JOIN("broadcast.server.general.player-join"),
+    BROADCAST_SERVER_GENERAL_PLAYER_LEAVE("broadcast.server.general.player-leave"),
+
     // Team
     BROADCAST_TEAM_GENERAL_PREFIX("broadcast.team.general.prefix"),
     BROADCAST_TEAM_GENERAL_MEMBER_JOIN("broadcast.team.general.member-join"),
     BROADCAST_TEAM_GENERAL_MEMBER_LEAVE("broadcast.team.general.member-leave"),
+    BROADCAST_TEAM_GENERAL_PLAYER_JOIN("broadcast.team.general.player-join"),
+    BROADCAST_TEAM_GENERAL_PLAYER_LEAVE("broadcast.team.general.player-leave"),
 
     BROADCAST_TEAM_DISBAND("broadcast.team.disband"),
     BROADCAST_TEAM_KICK("broadcast.team.kick"),

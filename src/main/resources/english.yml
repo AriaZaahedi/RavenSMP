@@ -100,11 +100,18 @@ message:
           unknown: "<red>An unknown error occurred. Please try again later."
 
 broadcast:
+  server:
+    general:
+      prefix: "<green>SMP <white><bold>></bold> "
+      player-join: "<server_broadcast_prefix><aqua><player_name> <yellow>has joined the SMP."
+      player-leave: "<server_broadcast_prefix><aqua><player_name> <yellow>has left the SMP."
   team:
     general:
       prefix: "<green>Team <white><bold>></bold> "
       member-join: "<newline><team_broadcast_prefix><aqua><member_name><yellow> has joined the team.<newline>"
       member-leave: "<newline><team_broadcast_prefix><aqua><member_name><yellow> has left the team.<newline>"
+      player-join: "<team_broadcast_prefix><aqua><player_name> <yellow>has joined the SMP."
+      player-leave: "<team_broadcast_prefix><aqua><player_name> <yellow>has left the SMP."
     disband: "<newline><team_broadcast_prefix><yellow>Team leader has disbanded the team.<newline>"
     kick: "<newline><team_broadcast_prefix><yellow>Team leader has kicked <aqua><member_name></aqua> from the team.<newline>"
     transfer: "<newline><team_broadcast_prefix><green><old_leader><yellow> has transferred the team leader to <aqua><new_leader></aqua>.<newline>"

@@ -9,10 +9,7 @@ import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamOptionsDao;
 import ir.ariwuh.plugin.ravensmp.listener.ChatListener;
 import ir.ariwuh.plugin.ravensmp.listener.PlayerListener;
-import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
-import ir.ariwuh.plugin.ravensmp.manager.DatabaseManager;
-import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
-import ir.ariwuh.plugin.ravensmp.manager.PluginSettingsManager;
+import ir.ariwuh.plugin.ravensmp.manager.*;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamInvitationManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamOptionsManager;
@@ -49,6 +46,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
     private TeamInvitationManager teamInvitationManager;
     private TeamOptionsManager teamOptionsManager;
 
+    private WorldManager worldManager;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -70,7 +69,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
         this.accountManager = new AccountManager(this.languageManager, this.accountDao);
 
         this.teamTagManager = new TeamTagManager(pluginSettings);
-        this.teamManager = new TeamManager(this, pluginSettings, this.teamDao, this.teamTagManager);
+        this.teamManager = new TeamManager(pluginSettings, this.teamDao, this.teamTagManager);
         this.teamManager.loadTeams();
         this.teamInvitationManager = new TeamInvitationManager(
                 this, pluginSettings, this.teamDao, this.accountManager, this.teamTagManager, this.teamManager
@@ -79,9 +78,11 @@ public final class RavenSMPPlugin extends JavaPlugin {
                 pluginSettings, this.teamOptionsDao, this.teamTagManager, this.teamManager
         );
 
+        this.worldManager = new WorldManager(this, this.teamManager);
+
         registerListeners(
                 new ChatListener(pluginSettings),
-                new PlayerListener(this.languageManager, this.accountManager, this.teamManager)
+                new PlayerListener(this.languageManager, this.accountManager, this.teamManager, this.worldManager)
         );
         registerCommands();
     }
@@ -112,7 +113,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        new LanguageCommand(this, this.languageManager, this.accountDao, this.accountManager);
+        new LanguageCommand(this.languageManager, this.accountDao, this.accountManager);
         new SettingsCommand(this);
         new SMPCommand(this);
         new TeamCommand(this);

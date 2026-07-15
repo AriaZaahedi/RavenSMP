@@ -1,6 +1,5 @@
 package ir.ariwuh.plugin.ravensmp.command.subcommand.settings;
 
-import ir.ariwuh.plugin.ravensmp.RavenSMPPlugin;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
@@ -8,6 +7,7 @@ import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
+import ir.ariwuh.plugin.ravensmp.utility.RavenUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.entity.Player;
@@ -16,8 +16,6 @@ import org.jetbrains.annotations.NotNull;
 @RequiredArgsConstructor
 @RavenSubCommand(label = "toggleTeamInvites", description = "Toggle team invites.")
 public final class SettingsToggleTeamInvitesSubcommand extends RavenSubCommandHandler {
-
-    private final @NotNull RavenSMPPlugin plugin;
 
     private final @NotNull SMPAccountDao accountDao;
     private final @NotNull AccountManager accountManager;
@@ -31,8 +29,7 @@ public final class SettingsToggleTeamInvitesSubcommand extends RavenSubCommandHa
             return;
         }
 
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(
-                this.plugin,
+        RavenUtility.runAsync(
                 () -> {
                     val accountSettings = account.accountSettings();
                     accountSettings.teamInvitesDisabled(!accountSettings.teamInvitesDisabled());
