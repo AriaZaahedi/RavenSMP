@@ -7,6 +7,7 @@ import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamInvitationStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
+import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
 import ir.ariwuh.plugin.ravensmp.task.PlayerTeamInvitationTask;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
@@ -34,6 +35,8 @@ public final class TeamInvitationManager {
 
     private final @NotNull SMPTeamDao teamDao;
 
+    private final @NotNull AccountManager accountManager;
+
     private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
 
@@ -59,6 +62,12 @@ public final class TeamInvitationManager {
         val targetId = targetPlayer.getUniqueId();
 
         if (playerId.equals(targetId)) return RavenSMPTeamInvitationStatus.TARGET_IS_SELF;
+
+        val targetAccount = this.accountManager.findOnlineById(targetId);
+        if (targetAccount == null) return RavenSMPTeamInvitationStatus.TARGET_ACCOUNT_NOT_FOUND;
+
+        if (targetAccount.accountSettings().teamInvitesDisabled())
+            return RavenSMPTeamInvitationStatus.TARGET_DISABLED_TEAM_INVITES;
 
         val targetTeam = this.teamManager.findTeamByPlayerId(targetId);
         if (targetTeam != null) {

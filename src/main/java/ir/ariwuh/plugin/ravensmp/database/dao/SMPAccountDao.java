@@ -5,7 +5,9 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import ir.ariwuh.plugin.ravensmp.account.SMPAccount;
 import ir.ariwuh.plugin.ravensmp.database.codec.SMPAccountCodec;
+import ir.ariwuh.plugin.ravensmp.database.codec.SMPAccountSettingsCodec;
 import ir.ariwuh.plugin.ravensmp.manager.DatabaseManager;
+import lombok.val;
 import org.bson.BsonBinary;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -20,10 +22,11 @@ public final class SMPAccountDao implements IDao<SMPAccount, UUID> {
     private final @NotNull MongoCollection<SMPAccount> collection;
 
     public SMPAccountDao(@NotNull DatabaseManager databaseManager) {
+        val accountSettingsCodec = new SMPAccountSettingsCodec();
         this.collection = databaseManager.database()
                 .getCollection("accounts", SMPAccount.class)
                 .withCodecRegistry(CodecRegistries.fromRegistries(
-                        CodecRegistries.fromCodecs(new SMPAccountCodec()),
+                        CodecRegistries.fromCodecs(new SMPAccountCodec(accountSettingsCodec), accountSettingsCodec),
                         DatabaseManager.DEFAULT_CODEC_REGISTRIES
                 ));
     }
@@ -38,7 +41,8 @@ public final class SMPAccountDao implements IDao<SMPAccount, UUID> {
         this.collection.updateOne(
                 Filters.eq("_id", new BsonBinary(account.accountId())),
                 Updates.combine(
-                        Updates.set("username", account.username())
+                        Updates.set("username", account.username()),
+                        Updates.set("settings", account.accountSettings())
                 )
         );
     }

@@ -72,7 +72,7 @@ public final class TeamManager {
         val playerTeam = findTeamByPlayerId(playerId);
         if (playerTeam == null) return;
 
-        Bukkit.getScheduler().runTaskAsynchronously(
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(
                 this.plugin,
                 () -> playerTeam.teamMembers().stream()
                         .filter(teamMember -> teamMember.playerId().equals(playerId))

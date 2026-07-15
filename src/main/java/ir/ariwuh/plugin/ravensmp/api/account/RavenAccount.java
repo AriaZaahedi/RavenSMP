@@ -10,4 +10,6 @@ public interface RavenAccount {
 
     @NotNull String username();
 
+    @NotNull RavenAccountSettings accountSettings();
+
 }

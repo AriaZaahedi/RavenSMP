@@ -24,6 +24,11 @@ message:
         already-selected: "<red>You've already selected this language."
         not-found: "<red>Language by this id does not exist."
 
+    # player settings command messages
+    player-settings:
+      team:
+        invites-toggled: "<yellow>Team invites have been <status><yellow>."
+
     # team command messages
     team:
       general:

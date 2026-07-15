@@ -2,6 +2,7 @@ package ir.ariwuh.plugin.ravensmp;
 
 import ir.ariwuh.plugin.ravensmp.command.LanguageCommand;
 import ir.ariwuh.plugin.ravensmp.command.SMPCommand;
+import ir.ariwuh.plugin.ravensmp.command.SettingsCommand;
 import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
@@ -72,7 +73,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
         this.teamManager = new TeamManager(this, pluginSettings, this.teamDao, this.teamTagManager);
         this.teamManager.loadTeams();
         this.teamInvitationManager = new TeamInvitationManager(
-                this, pluginSettings, this.teamDao, this.teamTagManager, this.teamManager
+                this, pluginSettings, this.teamDao, this.accountManager, this.teamTagManager, this.teamManager
         );
         this.teamOptionsManager = new TeamOptionsManager(
                 pluginSettings, this.teamOptionsDao, this.teamTagManager, this.teamManager
@@ -111,8 +112,9 @@ public final class RavenSMPPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        new SMPCommand(this);
         new LanguageCommand(this.languageManager);
+        new SettingsCommand(this);
+        new SMPCommand(this);
         new TeamCommand(this);
     }
 

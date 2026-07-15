@@ -28,6 +28,9 @@ public enum RavenLanguagePath {
     MESSAGE_COMMAND_LANGUAGE_ERROR_ALREADY_SELECTED("message.command.language.error.already-selected"),
     MESSAGE_COMMAND_LANGUAGE_ERROR_NOT_FOUND("message.command.language.error.not-found"),
 
+    // > Settings
+    MESSAGE_COMMAND_SETTINGS_TEAM_INVITES_TOGGLED("message.command.player-settings.team.invites-toggled"),
+
     // > Team
 
     // --- General ---
@@ -71,6 +74,7 @@ public enum RavenLanguagePath {
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING("message.command.team.invitation.error.lacking"),
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY("message.command.team.invitation.error.on-capacity"),
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DECLINED("message.command.team.invitation.error.target.invite-declined"),
+    MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DISABLED("message.command.team.invitation.error.target.invite-disabled"),
 
     // --- Leave ---
     MESSAGE_COMMAND_TEAM_LEAVE_ERROR_IS_LEADER("message.command.team.leave.error.is-leader"),

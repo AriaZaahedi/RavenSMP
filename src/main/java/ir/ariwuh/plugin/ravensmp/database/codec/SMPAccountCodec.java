@@ -1,6 +1,8 @@
 package ir.ariwuh.plugin.ravensmp.database.codec;
 
 import ir.ariwuh.plugin.ravensmp.account.SMPAccount;
+import ir.ariwuh.plugin.ravensmp.account.SMPAccountSettings;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bson.BsonBinary;
 import org.bson.BsonReader;
@@ -14,7 +16,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public final class SMPAccountCodec implements Codec<SMPAccount> {
+
+    private final @NotNull SMPAccountSettingsCodec accountSettingsCodec;
 
     @Override
     public void encode(@NotNull BsonWriter writer,
@@ -27,6 +32,9 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
 
         writer.writeString("username", value.username());
 
+        writer.writeName("settings");
+        this.accountSettingsCodec.encode(writer, value.accountSettings(), encoderContext);
+
         writer.writeEndDocument();
     }
 
@@ -37,6 +45,7 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
 
         UUID accountId = null;
         String username = null;
+        SMPAccountSettings accountSettings = null;
 
         while (!reader.readBsonType().equals(BsonType.END_OF_DOCUMENT)) {
             val fieldName = reader.readName();
@@ -44,6 +53,7 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
             switch (fieldName) {
                 case "_id" -> accountId = reader.readBinaryData().asUuid();
                 case "username" -> username = reader.readString();
+                case "settings" -> accountSettings = this.accountSettingsCodec.decode(reader, decoderContext);
                 default -> reader.skipValue();
             }
         }
@@ -52,7 +62,9 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
 
         if (accountId == null || username == null) return null;
 
-        return new SMPAccount(accountId, username);
+        val account = new SMPAccount(accountId, username);
+        account.accountSettings(accountSettings != null ? accountSettings : SMPAccountSettings.defaultSettings());
+        return account;
     }
 
     @Override

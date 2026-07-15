@@ -1,25 +1,41 @@
 package ir.ariwuh.plugin.ravensmp.account;
 
 import ir.ariwuh.plugin.ravensmp.api.account.RavenAccount;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.UUID;
 
 @Accessors(fluent = true)
-@NoArgsConstructor
-@RequiredArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "accountId")
 @ToString
 public final class SMPAccount implements RavenAccount {
 
     @BsonId
-    private @NotNull UUID accountId;
+    private @UnknownNullability UUID accountId;
 
     @Setter
     private @NotNull String username;
+
+    @Setter
+    private transient @NotNull SMPAccountSettings accountSettings;
+
+    public SMPAccount() {
+        this.accountSettings = new SMPAccountSettings();
+    }
+
+    public SMPAccount(@NotNull UUID accountId, @NotNull String username) {
+        this.accountId = accountId;
+        this.username = username;
+
+        this();
+    }
 
 }
