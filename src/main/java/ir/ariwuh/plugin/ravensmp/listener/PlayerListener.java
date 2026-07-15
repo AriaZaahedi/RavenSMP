@@ -1,5 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.listener;
 
+import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public final class PlayerListener implements Listener {
 
     private final @NotNull LanguageManager languageManager;
+    private final @NotNull AccountManager accountManager;
     private final @NotNull TeamManager teamManager;
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -22,6 +24,7 @@ public final class PlayerListener implements Listener {
         val playerId = event.getPlayer().getUniqueId();
         val playerName = event.getPlayer().getName();
 
+        this.accountManager.loadAccount(playerId, playerName);
         this.teamManager.updateTeamAudience(playerId);
         this.teamManager.updateScoreboardTeamFor(playerId);
         this.teamManager.updateTeamMemberUsername(playerId, playerName);
@@ -29,7 +32,9 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
-        this.languageManager.unloadPlayerLanguage(event.getPlayer().getUniqueId());
+        val playerId = event.getPlayer().getUniqueId();
+        this.languageManager.unloadPlayerLanguage(playerId);
+        this.accountManager.unloadAccount(playerId);
     }
 
 }

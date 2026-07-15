@@ -3,10 +3,12 @@ package ir.ariwuh.plugin.ravensmp;
 import ir.ariwuh.plugin.ravensmp.command.LanguageCommand;
 import ir.ariwuh.plugin.ravensmp.command.SMPCommand;
 import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
+import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamOptionsDao;
 import ir.ariwuh.plugin.ravensmp.listener.ChatListener;
 import ir.ariwuh.plugin.ravensmp.listener.PlayerListener;
+import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
 import ir.ariwuh.plugin.ravensmp.manager.DatabaseManager;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
 import ir.ariwuh.plugin.ravensmp.manager.PluginSettingsManager;
@@ -38,6 +40,9 @@ public final class RavenSMPPlugin extends JavaPlugin {
     private SMPTeamDao teamDao;
     private SMPTeamOptionsDao teamOptionsDao;
 
+    private SMPAccountDao accountDao;
+    private AccountManager accountManager;
+
     private TeamTagManager teamTagManager;
     private TeamManager teamManager;
     private TeamInvitationManager teamInvitationManager;
@@ -60,6 +65,9 @@ public final class RavenSMPPlugin extends JavaPlugin {
         this.teamDao = new SMPTeamDao(this.databaseManager);
         this.teamOptionsDao = new SMPTeamOptionsDao(this.databaseManager);
 
+        this.accountDao = new SMPAccountDao(this.databaseManager);
+        this.accountManager = new AccountManager(this.accountDao);
+
         this.teamTagManager = new TeamTagManager(pluginSettings);
         this.teamManager = new TeamManager(this, pluginSettings, this.teamDao, this.teamTagManager);
         this.teamManager.loadTeams();
@@ -72,7 +80,7 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         registerListeners(
                 new ChatListener(pluginSettings),
-                new PlayerListener(this.languageManager, this.teamManager)
+                new PlayerListener(this.languageManager, this.accountManager, this.teamManager)
         );
         registerCommands();
     }
@@ -84,6 +92,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
         this.teamTagManager.unregisterScoreboardTeams();
+
+        this.accountManager.unloadAccounts();
 
         this.databaseManager.close();
 
