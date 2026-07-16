@@ -21,7 +21,7 @@ public final class LanguageAdaptor implements RavenLanguageAdaptor {
 
     @Override
     public @NotNull RavenLanguage findPlayerLanguageById(@NotNull UUID playerId) {
-        return this.languageManager.findLanguageByPlayerId(playerId);
+        return this.languageManager.findPlayerLanguageById(playerId);
     }
 
 }

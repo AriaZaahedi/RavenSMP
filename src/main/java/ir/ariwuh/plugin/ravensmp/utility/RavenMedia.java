@@ -34,7 +34,7 @@ public final class RavenMedia {
     @Contract(pure = true)
     public @NotNull RavenLanguageValue findValueByPath(@NotNull UUID playerId,
                                                        @NotNull RavenLanguagePath languagePath) {
-        return languageManager.findLanguageByPlayerId(playerId)
+        return languageManager.findPlayerLanguageById(playerId)
                 .findValueByPath(languagePath);
     }
 

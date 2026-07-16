@@ -37,7 +37,7 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
 
         writer.writeString(
                 "languageId",
-                this.languageManager.findLanguageByPlayerId(value.accountId()).id()
+                this.languageManager.findPlayerLanguageById(value.accountId()).id()
         );
 
 

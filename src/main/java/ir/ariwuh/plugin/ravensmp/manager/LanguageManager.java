@@ -191,7 +191,7 @@ public final class LanguageManager {
     }
 
     @Contract(pure = true)
-    public @NotNull RavenLanguage findLanguageByPlayerId(@NotNull UUID playerId) {
+    public @NotNull RavenLanguage findPlayerLanguageById(@NotNull UUID playerId) {
         return this.playerLanguageMap.getOrDefault(playerId, this.defaultLanguage);
     }
 
