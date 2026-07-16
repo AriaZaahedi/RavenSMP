@@ -1,5 +1,5 @@
 name: "RavenSMP"
-version: "0.2"
+version: "0.3"
 main: "ir.ariwuh.plugin.ravensmp.RavenSMPPlugin"
 loader: "ir.ariwuh.plugin.ravensmp.RavenSMPPluginLoader"
 description: "A lightweight Minecraft PaperMC plugin designed for SMP servers."
