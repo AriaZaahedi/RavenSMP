@@ -7,6 +7,7 @@ import ir.ariwuh.plugin.ravensmp.command.TeamCommand;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamOptionsDao;
+import ir.ariwuh.plugin.ravensmp.impl.RavenAPIImpl;
 import ir.ariwuh.plugin.ravensmp.listener.ChatListener;
 import ir.ariwuh.plugin.ravensmp.listener.PlayerListener;
 import ir.ariwuh.plugin.ravensmp.manager.*;
@@ -48,6 +49,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
     private WorldManager worldManager;
 
+    private RavenAPIImpl ravenAPI;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -80,6 +83,9 @@ public final class RavenSMPPlugin extends JavaPlugin {
 
         this.worldManager = new WorldManager(this, this.teamManager);
 
+        this.ravenAPI = new RavenAPIImpl(this);
+        this.ravenAPI.instantiate();
+
         registerListeners(
                 new ChatListener(pluginSettings),
                 new PlayerListener(this.languageManager, this.accountManager, this.teamManager, this.worldManager)
@@ -90,6 +96,8 @@ public final class RavenSMPPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         instance = null;
+
+        this.ravenAPI.unregister();
 
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
