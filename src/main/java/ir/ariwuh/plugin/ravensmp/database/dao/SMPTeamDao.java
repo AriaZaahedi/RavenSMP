@@ -7,7 +7,7 @@ import ir.ariwuh.plugin.ravensmp.database.codec.SMPTeamCodec;
 import ir.ariwuh.plugin.ravensmp.database.codec.SMPTeamMemberCodec;
 import ir.ariwuh.plugin.ravensmp.database.codec.SMPTeamOptionsCodec;
 import ir.ariwuh.plugin.ravensmp.manager.DatabaseManager;
-import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
+import ir.ariwuh.plugin.ravensmp.model.team.SMPTeam;
 import lombok.val;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.jetbrains.annotations.NotNull;

@@ -3,12 +3,12 @@ package ir.ariwuh.plugin.ravensmp.command.subcommand.team;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholder;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
-import ir.ariwuh.plugin.ravensmp.team.status.RavenSMPTeamChangeOptionsStatus;
+import ir.ariwuh.plugin.ravensmp.model.team.status.RavenSMPTeamChangeOptionsStatus;
 import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommand;
 import ir.ariwuh.plugin.ravensmp.command.api.RavenSubCommandHandler;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamManager;
 import ir.ariwuh.plugin.ravensmp.manager.team.TeamOptionsManager;
-import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
+import ir.ariwuh.plugin.ravensmp.model.team.SMPTeamOptions;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
 import ir.ariwuh.plugin.ravensmp.utility.StringUtility;
 import lombok.val;
@@ -19,7 +19,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.*;
 
 import static ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath.*;
-import static ir.ariwuh.plugin.ravensmp.team.status.RavenSMPTeamChangeOptionsStatus.*;
+import static ir.ariwuh.plugin.ravensmp.model.team.status.RavenSMPTeamChangeOptionsStatus.*;
 
 @RavenSubCommand(label = "options", description = "Adjust team options.")
 public final class TeamOptionsSubcommand extends RavenSubCommandHandler {

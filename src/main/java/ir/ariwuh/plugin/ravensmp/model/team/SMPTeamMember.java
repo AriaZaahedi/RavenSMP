@@ -1,4 +1,4 @@
-package ir.ariwuh.plugin.ravensmp.team;
+package ir.ariwuh.plugin.ravensmp.model.team;
 
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import lombok.*;

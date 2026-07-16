@@ -1,6 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.database.codec;
 
-import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
+import ir.ariwuh.plugin.ravensmp.model.team.SMPTeamMember;
 import lombok.val;
 import org.bson.BsonBinary;
 import org.bson.BsonReader;

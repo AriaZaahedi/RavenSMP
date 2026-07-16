@@ -1,6 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.database.codec;
 
-import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
+import ir.ariwuh.plugin.ravensmp.model.team.SMPTeamOptions;
 import ir.ariwuh.plugin.ravensmp.utility.StringUtility;
 import lombok.val;
 import org.bson.BsonReader;

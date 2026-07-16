@@ -1,9 +1,9 @@
 package ir.ariwuh.plugin.ravensmp.manager.team;
 
-import ir.ariwuh.plugin.ravensmp.team.status.RavenSMPTeamChangeOptionsStatus;
+import ir.ariwuh.plugin.ravensmp.model.team.status.RavenSMPTeamChangeOptionsStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamOptionsDao;
-import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
+import ir.ariwuh.plugin.ravensmp.model.team.SMPTeamOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;

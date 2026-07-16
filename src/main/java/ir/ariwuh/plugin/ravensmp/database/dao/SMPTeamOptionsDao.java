@@ -4,7 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import ir.ariwuh.plugin.ravensmp.manager.DatabaseManager;
-import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
+import ir.ariwuh.plugin.ravensmp.model.team.SMPTeamOptions;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
