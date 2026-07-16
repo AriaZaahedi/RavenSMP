@@ -8,6 +8,7 @@ import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamActionStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
+import ir.ariwuh.plugin.ravensmp.api.event.team.*;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
@@ -123,6 +124,8 @@ public final class TeamManager {
         this.teams.add(newTeam);
         this.teamDao.insert(newTeam);
 
+        RavenUtility.callEvent(new RavenSMPTeamCreateEvent(player, newTeam));
+
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }
 
@@ -132,6 +135,18 @@ public final class TeamManager {
         if (playerTeam == null) return RavenSMPTeamActionStatus.PLAYER_LACKING_TEAM;
         if (!playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_NOT_LEADER;
         if (!playerTeam.teamId().equalsIgnoreCase(teamId)) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
+
+        val whoDisbanded = playerTeam.teamMembers().stream()
+                .filter(teamMember -> teamMember.playerId().equals(playerId))
+                .findFirst()
+                .orElse(null);
+
+        if (whoDisbanded != null) {
+            val teamMemberDisbandEvent = new RavenSMPTeamPreDisbandEvent(whoDisbanded, playerTeam);
+            RavenUtility.callEvent(teamMemberDisbandEvent);
+
+            if (teamMemberDisbandEvent.isCancelled()) return RavenSMPTeamActionStatus.CANCELED;
+        }
 
         playerTeam.sendLocalizedMessage(RavenLanguagePath.BROADCAST_TEAM_DISBAND);
 
@@ -156,6 +171,18 @@ public final class TeamManager {
         val playerTeam = findTeamByPlayerId(playerId);
         if (playerTeam == null) return RavenSMPTeamActionStatus.PLAYER_LACKING_TEAM;
         if (playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_IS_LEADER;
+
+        val whoLeft = playerTeam.teamMembers().stream()
+                .filter(teamMember -> teamMember.playerId().equals(playerId))
+                .findFirst()
+                .orElse(null);
+
+        if (whoLeft != null) {
+            val teamMemberLeaveEvent = new RavenSMPTeamMemberPreLeaveEvent(whoLeft, playerTeam);
+            RavenUtility.callEvent(teamMemberLeaveEvent);
+
+            if (teamMemberLeaveEvent.isCancelled()) return RavenSMPTeamActionStatus.CANCELED;
+        }
 
         playerTeam.removeMember(playerId);
 
@@ -188,6 +215,23 @@ public final class TeamManager {
 
         if (playerId.equals(targetId)) return RavenSMPTeamActionStatus.TARGET_IS_SELF;
         if (!playerTeam.isMember(targetId)) return RavenSMPTeamActionStatus.TARGET_NOT_IN_TEAM;
+
+        val whoKicked = playerTeam.teamMembers().stream()
+                .filter(teamMember -> teamMember.playerId().equals(playerId))
+                .findFirst()
+                .orElse(null);
+
+        val kickedMember = playerTeam.teamMembers().stream()
+                .filter(teamMember -> teamMember.playerId().equals(targetId))
+                .findFirst()
+                .orElse(null);
+
+        if (whoKicked != null && kickedMember != null) {
+            val teamMemberKickEvent = new RavenSMPTeamMemberPreKickEvent(whoKicked, kickedMember, playerTeam);
+            RavenUtility.callEvent(teamMemberKickEvent);
+
+            if (teamMemberKickEvent.isCancelled()) return RavenSMPTeamActionStatus.CANCELED;
+        }
 
         playerTeam.removeMember(targetId);
 
@@ -228,6 +272,23 @@ public final class TeamManager {
         val targetId = targetPlayer.getUniqueId();
         if (playerId.equals(targetId)) return RavenSMPTeamActionStatus.TARGET_IS_SELF;
         if (!playerTeam.isMember(targetId)) return RavenSMPTeamActionStatus.TARGET_NOT_IN_TEAM;
+
+        val oldTeamLeader = playerTeam.teamMembers().stream()
+                .filter(teamMember -> teamMember.playerId().equals(playerId))
+                .findFirst()
+                .orElse(null);
+
+        val newTeamLeader = playerTeam.teamMembers().stream()
+                .filter(teamMember -> teamMember.playerId().equals(targetId))
+                .findFirst()
+                .orElse(null);
+
+        if (oldTeamLeader != null && newTeamLeader != null) {
+            val teamMemberKickEvent = new RavenSMPTeamPreTransferLeadershipEvent(oldTeamLeader, newTeamLeader, playerTeam);
+            RavenUtility.callEvent(teamMemberKickEvent);
+
+            if (teamMemberKickEvent.isCancelled()) return RavenSMPTeamActionStatus.CANCELED;
+        }
 
         val oldLeaderUsername = playerTeam.teamLeader().username();
         val newLeaderUsername = targetPlayer.getName();

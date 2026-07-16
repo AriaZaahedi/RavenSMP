@@ -7,12 +7,14 @@ import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamInvitationStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
+import ir.ariwuh.plugin.ravensmp.api.event.team.RavenSMPTeamMemberPreJoinEvent;
 import ir.ariwuh.plugin.ravensmp.manager.AccountManager;
 import ir.ariwuh.plugin.ravensmp.task.PlayerTeamInvitationTask;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;
 import ir.ariwuh.plugin.ravensmp.utility.RavenMedia;
+import ir.ariwuh.plugin.ravensmp.utility.RavenUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -182,6 +184,11 @@ public final class TeamInvitationManager {
 
         val playerTeam = this.teamManager.findTeamByPlayerId(playerId);
         if (playerTeam != null) return RavenSMPTeamInvitationStatus.PLAYER_HAS_TEAM;
+
+        val teamMemberJoinEvent = new RavenSMPTeamMemberPreJoinEvent(player, targetTeam.teamLeader(), targetTeam);
+        RavenUtility.callEvent(teamMemberJoinEvent);
+
+        if (teamMemberJoinEvent.isCancelled()) return RavenSMPTeamInvitationStatus.CANCELED;
 
         val teamMember = new SMPTeamMember(playerId, player.getName());
         targetTeam.addMember(teamMember);

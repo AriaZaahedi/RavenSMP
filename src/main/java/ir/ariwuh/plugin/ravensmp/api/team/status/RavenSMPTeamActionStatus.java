@@ -20,6 +20,8 @@ public enum RavenSMPTeamActionStatus {
 
     TARGET_IS_SELF,
     TARGET_NOT_IN_TEAM,
-    TARGET_OFFLINE
+    TARGET_OFFLINE,
+
+    CANCELED
 
 }
