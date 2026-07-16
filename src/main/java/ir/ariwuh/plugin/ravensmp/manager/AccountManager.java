@@ -1,6 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.manager;
 
-import ir.ariwuh.plugin.ravensmp.account.SMPAccount;
+import ir.ariwuh.plugin.ravensmp.model.account.SMPAccount;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

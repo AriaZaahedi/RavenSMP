@@ -3,7 +3,7 @@ package ir.ariwuh.plugin.ravensmp.database.dao;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-import ir.ariwuh.plugin.ravensmp.account.SMPAccount;
+import ir.ariwuh.plugin.ravensmp.model.account.SMPAccount;
 import ir.ariwuh.plugin.ravensmp.database.codec.SMPAccountCodec;
 import ir.ariwuh.plugin.ravensmp.database.codec.SMPAccountSettingsCodec;
 import ir.ariwuh.plugin.ravensmp.manager.DatabaseManager;

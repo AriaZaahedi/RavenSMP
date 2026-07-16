@@ -1,4 +1,4 @@
-package ir.ariwuh.plugin.ravensmp.account;
+package ir.ariwuh.plugin.ravensmp.model.account;
 
 import ir.ariwuh.plugin.ravensmp.api.account.RavenAccountSettings;
 import lombok.Data;

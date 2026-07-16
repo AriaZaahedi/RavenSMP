@@ -1,6 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.database.codec;
 
-import ir.ariwuh.plugin.ravensmp.account.SMPAccountSettings;
+import ir.ariwuh.plugin.ravensmp.model.account.SMPAccountSettings;
 import lombok.val;
 import org.bson.BsonReader;
 import org.bson.BsonType;
