@@ -1,6 +1,6 @@
 package ir.ariwuh.plugin.ravensmp.manager.team;
 
-import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamChangeOptionsStatus;
+import ir.ariwuh.plugin.ravensmp.team.status.RavenSMPTeamChangeOptionsStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamOptionsDao;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamOptions;

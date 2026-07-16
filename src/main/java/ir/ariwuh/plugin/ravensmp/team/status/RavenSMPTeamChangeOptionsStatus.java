@@ -1,4 +1,4 @@
-package ir.ariwuh.plugin.ravensmp.api.team.status;
+package ir.ariwuh.plugin.ravensmp.team.status;
 
 public enum RavenSMPTeamChangeOptionsStatus {
 

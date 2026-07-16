@@ -4,7 +4,7 @@ import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguagePath;
 import ir.ariwuh.plugin.ravensmp.api.language.placeholder.RavenPlaceholderLike;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
-import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamActionStatus;
+import ir.ariwuh.plugin.ravensmp.team.status.RavenSMPTeamActionStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
