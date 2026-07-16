@@ -261,7 +261,7 @@ public final class TeamManager {
     }
 
     @Contract(pure = true)
-    public @NotNull RavenSMPTeamActionStatus transferTeamLeader(@NotNull UUID playerId, @NotNull String targetName) {
+    public @NotNull RavenSMPTeamActionStatus transferTeamLeadership(@NotNull UUID playerId, @NotNull String targetName) {
         val playerTeam = findTeamByPlayerId(playerId);
         if (playerTeam == null) return RavenSMPTeamActionStatus.PLAYER_LACKING_TEAM;
         if (!playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_NOT_LEADER;

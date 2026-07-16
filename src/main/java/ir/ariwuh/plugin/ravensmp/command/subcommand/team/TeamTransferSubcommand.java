@@ -32,7 +32,7 @@ public final class TeamTransferSubcommand extends RavenSubCommandHandler {
         }
 
         val targetPlayerName = arguments[0];
-        switch (this.teamManager.transferTeamLeader(player.getUniqueId(), targetPlayerName)) {
+        switch (this.teamManager.transferTeamLeadership(player.getUniqueId(), targetPlayerName)) {
             case PLAYER_LACKING_TEAM ->
                     RavenMedia.sendMessage(player, RavenLanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
             case PLAYER_NOT_LEADER ->
