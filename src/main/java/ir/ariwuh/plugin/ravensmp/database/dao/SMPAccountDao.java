@@ -47,6 +47,7 @@ public final class SMPAccountDao implements IDao<SMPAccount, UUID> {
                 Updates.combine(
                         Updates.set("username", account.username()),
                         Updates.set("languageId", account.language().id()),
+                        Updates.set("lastTeamCreationTime", account.lastTeamCreationTime()),
                         Updates.set("settings", account.accountSettings())
                 )
         );

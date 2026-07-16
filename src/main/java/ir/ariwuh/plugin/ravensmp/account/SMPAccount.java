@@ -31,6 +31,9 @@ public final class SMPAccount implements RavenAccount {
     @Setter
     private transient @NotNull SMPAccountSettings accountSettings;
 
+    @Setter
+    private long lastTeamCreationTime;
+
     public SMPAccount() {
         this.accountSettings = new SMPAccountSettings();
     }

@@ -40,6 +40,9 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
                 this.languageManager.findLanguageByPlayerId(value.accountId()).id()
         );
 
+
+        writer.writeInt64("lastTeamCreationTime", value.lastTeamCreationTime());
+
         writer.writeName("settings");
         this.accountSettingsCodec.encode(writer, value.accountSettings(), encoderContext);
 
@@ -55,6 +58,7 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
         String username = null;
         RavenLanguage language = null;
         SMPAccountSettings accountSettings = null;
+        long lastTeamCreationTime = 0L;
 
         while (!reader.readBsonType().equals(BsonType.END_OF_DOCUMENT)) {
             val fieldName = reader.readName();
@@ -64,6 +68,7 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
                 case "username" -> username = reader.readString();
                 case "languageId" -> language = this.languageManager.findLanguageByIdElseDefault(reader.readString());
                 case "settings" -> accountSettings = this.accountSettingsCodec.decode(reader, decoderContext);
+                case "lastTeamCreationTime" -> lastTeamCreationTime = reader.readInt64();
                 default -> reader.skipValue();
             }
         }
@@ -74,6 +79,7 @@ public final class SMPAccountCodec implements Codec<SMPAccount> {
 
         val account = new SMPAccount(accountId, username);
         account.language(language);
+        account.lastTeamCreationTime(lastTeamCreationTime);
         account.accountSettings(accountSettings != null ? accountSettings : SMPAccountSettings.defaultSettings());
         return account;
     }

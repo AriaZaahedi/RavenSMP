@@ -6,6 +6,7 @@ import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeam;
 import ir.ariwuh.plugin.ravensmp.api.team.RavenSMPTeamMember;
 import ir.ariwuh.plugin.ravensmp.api.team.status.RavenSMPTeamActionStatus;
 import ir.ariwuh.plugin.ravensmp.config.PluginSettings;
+import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPTeamDao;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeam;
 import ir.ariwuh.plugin.ravensmp.team.SMPTeamMember;
@@ -31,13 +32,12 @@ public final class TeamManager {
 
     private final @NotNull PluginSettings pluginSettings;
 
+    private final @NotNull SMPAccountDao accountDao;
     private final @NotNull SMPTeamDao teamDao;
-
     private final @NotNull TeamTagManager teamTagManager;
 
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
 
-    private final @NotNull TimedHashSet<UUID> teamCreationCooldown = new TimedHashSet<>();
     private final @NotNull TimedHashSet<UUID> teamHomeTeleportCooldown = new TimedHashSet<>();
 
     public void loadTeams() {
@@ -100,14 +100,18 @@ public final class TeamManager {
         if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex())) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
         if (teamId.length() > this.pluginSettings.maxTeamIdLength()) return RavenSMPTeamActionStatus.TEAM_ID_TOO_LONG;
         if (findTeamById(teamId) != null) return RavenSMPTeamActionStatus.TEAM_ID_EXISTS;
-        if (this.teamCreationCooldown.contains(teamLeaderId))
-            return RavenSMPTeamActionStatus.PLAYER_TEAM_CREATION_COOLDOWN;
 
-        this.teamCreationCooldown.add(
-                teamLeaderId,
-                this.pluginSettings.teamCreationCooldownTimeSeconds(),
-                TimeUnit.SECONDS
-        );
+        val account = this.accountDao.findById(teamLeaderId);
+        if (account != null) {
+            val timeElapsedMillis = System.currentTimeMillis() - account.lastTeamCreationTime();
+            val cooldownMillis = this.pluginSettings.teamCreationCooldownTimeSeconds() * 1000L;
+
+            if (timeElapsedMillis < cooldownMillis) return RavenSMPTeamActionStatus.PLAYER_TEAM_CREATION_COOLDOWN;
+
+            account.lastTeamCreationTime(System.currentTimeMillis());
+            this.accountDao.update(account);
+        }
+
         val teamLeader = new SMPTeamMember(teamLeaderId, teamLeaderUsername);
         val newTeam = new SMPTeam(teamId, teamLeader);
 
