@@ -51,8 +51,8 @@ public final class WorldManager {
         }));
     }
 
-    public void broadcastLeaveMessage(@NotNull Player whoJoined) {
-        val whoJoinedName = whoJoined.getName();
+    public void broadcastLeaveMessage(@NotNull Player whoLeft) {
+        val whoJoinedName = whoLeft.getName();
         RavenUtility.runAsync(() -> this.plugin.getServer().getOnlinePlayers().forEach(onlinePlayer -> {
             val onlinePlayerId = onlinePlayer.getUniqueId();
             val serverBroadcastingPrefix = RavenMedia.findValueByPath(
@@ -61,7 +61,7 @@ public final class WorldManager {
             val teamBroadcastingPrefix = RavenMedia.findValueByPath(
                     onlinePlayerId, BROADCAST_TEAM_GENERAL_PREFIX
             ).asText();
-            if (isTeammate(whoJoined.getUniqueId(), onlinePlayerId)) RavenMedia.sendMessage(
+            if (isTeammate(whoLeft.getUniqueId(), onlinePlayerId)) RavenMedia.sendMessage(
                     onlinePlayer,
                     BROADCAST_TEAM_GENERAL_PLAYER_LEAVE,
                     RavenPlaceholderLike.builder()
