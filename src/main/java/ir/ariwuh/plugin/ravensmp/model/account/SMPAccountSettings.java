@@ -12,13 +12,13 @@ import org.jetbrains.annotations.NotNull;
 @Data
 public final class SMPAccountSettings implements RavenAccountSettings {
 
+    private boolean teamInvitesDisabled;
+
     public static @NotNull SMPAccountSettings defaultSettings() {
         val accountSettings = new SMPAccountSettings();
         accountSettings.teamInvitesDisabled(false);
 
         return accountSettings;
     }
-
-    private boolean teamInvitesDisabled;
 
 }

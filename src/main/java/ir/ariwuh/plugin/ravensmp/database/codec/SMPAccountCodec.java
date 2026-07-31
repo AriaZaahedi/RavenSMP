@@ -1,9 +1,9 @@
 package ir.ariwuh.plugin.ravensmp.database.codec;
 
-import ir.ariwuh.plugin.ravensmp.model.account.SMPAccount;
-import ir.ariwuh.plugin.ravensmp.model.account.SMPAccountSettings;
 import ir.ariwuh.plugin.ravensmp.api.language.RavenLanguage;
 import ir.ariwuh.plugin.ravensmp.manager.LanguageManager;
+import ir.ariwuh.plugin.ravensmp.model.account.SMPAccount;
+import ir.ariwuh.plugin.ravensmp.model.account.SMPAccountSettings;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bson.BsonBinary;

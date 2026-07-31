@@ -1,7 +1,7 @@
 package ir.ariwuh.plugin.ravensmp.manager;
 
-import ir.ariwuh.plugin.ravensmp.model.account.SMPAccount;
 import ir.ariwuh.plugin.ravensmp.database.dao.SMPAccountDao;
+import ir.ariwuh.plugin.ravensmp.model.account.SMPAccount;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.jetbrains.annotations.Contract;

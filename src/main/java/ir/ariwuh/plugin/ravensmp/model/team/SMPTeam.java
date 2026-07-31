@@ -17,6 +17,7 @@ import java.util.*;
 @Accessors(fluent = true)
 public final class SMPTeam implements RavenSMPTeam {
 
+    private final @NotNull HashSet<RavenSMPTeamMember> teamMembers;
     @BsonId
     @Getter
     @Setter
@@ -24,8 +25,6 @@ public final class SMPTeam implements RavenSMPTeam {
     @Getter
     @Setter
     private @NotNull RavenSMPTeamMember teamLeader;
-
-    private final @NotNull HashSet<RavenSMPTeamMember> teamMembers;
     @Getter
     @Setter
     private @NotNull RavenSMPTeamOptions teamOptions;
