@@ -1,5 +1,5 @@
 name: "RavenSMP"
-version: "0.3"
+version: "0.3.1"
 api-version: "26.2"
 main: "ir.ariwuh.plugin.ravensmp.RavenSMPPlugin"
 loader: "ir.ariwuh.plugin.ravensmp.RavenSMPPluginLoader"
