@@ -77,7 +77,6 @@ public final class WorldManager {
                             .append("player_name", whoJoinedName)
                             .build()
             );
-
         }));
     }
 

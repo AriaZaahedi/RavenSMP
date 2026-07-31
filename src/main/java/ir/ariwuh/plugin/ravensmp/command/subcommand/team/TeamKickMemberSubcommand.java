@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-@RavenSubCommand(label = "kick", description = "Kick a team member")
+@RavenSubCommand(label = "kick", description = "Kick a team member.")
 public final class TeamKickMemberSubcommand extends RavenSubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
