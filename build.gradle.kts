@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    val lombok = "org.projectlombok:lombok:1.18.46"
+    val lombok = "org.projectlombok:lombok:1.18.48"
     compileOnly(lombok)
     annotationProcessor(lombok)
 
