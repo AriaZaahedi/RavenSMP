@@ -24,7 +24,7 @@ public final class RavenSMPPluginLoader implements PluginLoader {
 
         libraryResolver.addDependency(
                 new Dependency(
-                        new DefaultArtifact("org.mongodb:mongodb-driver-sync:5.9.1"), null
+                        new DefaultArtifact("org.mongodb:mongodb-driver-sync:5.11.0"), null
                 )
         );
 
