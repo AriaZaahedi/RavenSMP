@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -43,7 +44,8 @@ public final class TeamInvitationManager {
     private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
 
-    private final @NotNull HashMap<RavenSMPTeam, HashSet<UUID>> pendingTeamInvites = new HashMap<>();
+    // Optimized: Use ConcurrentHashMap for thread-safe operations
+    private final @NotNull ConcurrentHashMap<RavenSMPTeam, HashSet<UUID>> pendingTeamInvites = new ConcurrentHashMap<>();
 
     public void removeActivePendingInvites() {
         this.pendingTeamInvites.clear();

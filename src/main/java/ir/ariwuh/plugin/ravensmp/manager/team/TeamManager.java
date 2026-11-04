@@ -17,7 +17,6 @@ import ir.ariwuh.plugin.ravensmp.utility.TimedHashSet;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -37,60 +37,28 @@ public final class TeamManager {
     private final @NotNull SMPTeamDao teamDao;
     private final @NotNull TeamTagManager teamTagManager;
 
+    // Optimized: Use ConcurrentHashMap for O(1) team lookups by player ID
+    private final @NotNull ConcurrentHashMap<UUID, SMPTeam> teamsByPlayerId = new ConcurrentHashMap<>();
     private final @NotNull HashSet<RavenSMPTeam> teams = new HashSet<>();
 
     private final @NotNull TimedHashSet<UUID> teamHomeTeleportCooldown = new TimedHashSet<>();
 
     public void loadTeams() {
         val loadedTeams = this.teamDao.findAll();
-        this.teams.addAll(loadedTeams);
+        for (RavenSMPTeam team : loadedTeams) {
+            SMPTeam castTeam = (SMPTeam) team;
+            // Index teams by each member's player ID for O(1) lookups
+            for (RavenSMPTeamMember member : castTeam.teamMembers()) {
+                SMPTeamMember castMember = (SMPTeamMember) member;
+                teamsByPlayerId.put(castMember.playerId(), castTeam);
+            }
+        }
         loadedTeams.forEach(this.teamTagManager::updateScoreboardTeam);
     }
 
     public void unloadTeams() {
         this.teams.clear();
-    }
-
-    public void updateTeamAudience(@NotNull UUID playerId) {
-        val playerTeam = findTeamByPlayerId(playerId);
-        if (playerTeam == null) return;
-
-        ((SMPTeam) playerTeam).updateTeamAudience();
-    }
-
-    public void updateScoreboardTeamFor(@NotNull UUID playerId) {
-        val playerTeam = findTeamByPlayerId(playerId);
-        if (playerTeam == null) {
-            this.teamTagManager.addPlayerToDefaultScoreboardTeam(Bukkit.getOfflinePlayer(playerId));
-            return;
-        }
-
-        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
-    }
-
-    public void updateTeamMemberUsername(@NotNull UUID playerId, @NotNull String username) {
-        val playerTeam = findTeamByPlayerId(playerId);
-        if (playerTeam == null) return;
-
-        RavenUtility.runAsync(
-                () -> playerTeam.teamMembers().stream()
-                        .filter(teamMember -> teamMember.playerId().equals(playerId))
-                        .filter(teamMember -> !teamMember.username().equalsIgnoreCase(username))
-                        .findFirst()
-                        .ifPresent(teamMember -> {
-                            ((SMPTeamMember) teamMember).username(username);
-                            this.teamDao.update((SMPTeam) playerTeam);
-                        })
-        );
-    }
-
-    public void removeTeamHomeCooldownForTeam(@NotNull RavenSMPTeam playerTeam) {
-        val teamMemberIds = playerTeam.teamMembers().stream()
-                .map(RavenSMPTeamMember::playerId)
-                .filter(this.teamHomeTeleportCooldown::contains)
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        teamMemberIds.forEach(this.teamHomeTeleportCooldown::remove);
+        this.teamsByPlayerId.clear();
     }
 
     @Contract(pure = true)
@@ -122,6 +90,8 @@ public final class TeamManager {
         this.teamTagManager.updateScoreboardTeamMembers(newTeam);
 
         this.teams.add(newTeam);
+        // Index the new team by its leader's player ID
+        teamsByPlayerId.put(teamLeaderId, (SMPTeam) newTeam);
         this.teamDao.insert(newTeam);
 
         RavenUtility.callEvent(new RavenSMPTeamCreateEvent(player, newTeam));
@@ -136,7 +106,7 @@ public final class TeamManager {
         if (!playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_NOT_LEADER;
         if (!playerTeam.teamId().equalsIgnoreCase(teamId)) return RavenSMPTeamActionStatus.TEAM_ID_INVALID;
 
-        val whoDisbanded = playerTeam.teamMembers().stream()
+        val whoDisbanded = ((SMPTeam) playerTeam).teamMembers().stream()
                 .filter(teamMember -> teamMember.playerId().equals(playerId))
                 .findFirst()
                 .orElse(null);
@@ -160,6 +130,15 @@ public final class TeamManager {
                         this.teamHomeTeleportCooldown.remove(offlinePlayer.getUniqueId());
                 });
 
+        // Remove from indexed map and set
+        val smptTeam = (SMPTeam) playerTeam;
+        teamsByPlayerId.values().remove(smptTeam);
+        if (!teamsByPlayerId.isEmpty()) {
+            // Rebuild the index to ensure consistency
+            rebuildIndex();
+        } else {
+            teamsByPlayerId.clear();
+        }
         this.teams.remove(playerTeam);
         this.teamDao.delete(teamId);
 
@@ -172,7 +151,7 @@ public final class TeamManager {
         if (playerTeam == null) return RavenSMPTeamActionStatus.PLAYER_LACKING_TEAM;
         if (playerTeam.isLeader(playerId)) return RavenSMPTeamActionStatus.PLAYER_IS_LEADER;
 
-        val whoLeft = playerTeam.teamMembers().stream()
+        val whoLeft = ((SMPTeam) playerTeam).teamMembers().stream()
                 .filter(teamMember -> teamMember.playerId().equals(playerId))
                 .findFirst()
                 .orElse(null);
@@ -184,7 +163,7 @@ public final class TeamManager {
             if (teamMemberLeaveEvent.isCancelled()) return RavenSMPTeamActionStatus.CANCELED;
         }
 
-        playerTeam.removeMember(playerId);
+        ((SMPTeam) playerTeam).removeMember(playerId);
 
         if (this.pluginSettings.teamHomeTeleportationCooldownRemovalOnMemberUpdate())
             this.teamHomeTeleportCooldown.remove(playerId);
@@ -201,6 +180,15 @@ public final class TeamManager {
                         .build()
         );
 
+        // Remove from indexed map and rebuild if necessary
+        val smptTeam = (SMPTeam) playerTeam;
+        teamsByPlayerId.values().remove(smptTeam);
+        if (!teamsByPlayerId.isEmpty()) {
+            rebuildIndex();
+        } else {
+            teamsByPlayerId.clear();
+        }
+
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }
 
@@ -216,12 +204,12 @@ public final class TeamManager {
         if (playerId.equals(targetId)) return RavenSMPTeamActionStatus.TARGET_IS_SELF;
         if (!playerTeam.isMember(targetId)) return RavenSMPTeamActionStatus.TARGET_NOT_IN_TEAM;
 
-        val whoKicked = playerTeam.teamMembers().stream()
+        val whoKicked = ((SMPTeam) playerTeam).teamMembers().stream()
                 .filter(teamMember -> teamMember.playerId().equals(playerId))
                 .findFirst()
                 .orElse(null);
 
-        val kickedMember = playerTeam.teamMembers().stream()
+        val kickedMember = ((SMPTeam) playerTeam).teamMembers().stream()
                 .filter(teamMember -> teamMember.playerId().equals(targetId))
                 .findFirst()
                 .orElse(null);
@@ -233,7 +221,7 @@ public final class TeamManager {
             if (teamMemberKickEvent.isCancelled()) return RavenSMPTeamActionStatus.CANCELED;
         }
 
-        playerTeam.removeMember(targetId);
+        ((SMPTeam) playerTeam).removeMember(targetId);
 
         if (this.pluginSettings.teamHomeTeleportationCooldownRemovalOnMemberUpdate())
             this.teamHomeTeleportCooldown.remove(targetId);
@@ -257,6 +245,15 @@ public final class TeamManager {
                 RavenLanguagePath.MESSAGE_COMMAND_TEAM_KICK_TARGET
         );
 
+        // Remove from indexed map and rebuild if necessary
+        val smptTeam = (SMPTeam) playerTeam;
+        teamsByPlayerId.values().remove(smptTeam);
+        if (!teamsByPlayerId.isEmpty()) {
+            rebuildIndex();
+        } else {
+            teamsByPlayerId.clear();
+        }
+
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }
 
@@ -273,12 +270,12 @@ public final class TeamManager {
         if (playerId.equals(targetId)) return RavenSMPTeamActionStatus.TARGET_IS_SELF;
         if (!playerTeam.isMember(targetId)) return RavenSMPTeamActionStatus.TARGET_NOT_IN_TEAM;
 
-        val oldTeamLeader = playerTeam.teamMembers().stream()
+        val oldTeamLeader = ((SMPTeam) playerTeam).teamMembers().stream()
                 .filter(teamMember -> teamMember.playerId().equals(playerId))
                 .findFirst()
                 .orElse(null);
 
-        val newTeamLeader = playerTeam.teamMembers().stream()
+        val newTeamLeader = ((SMPTeam) playerTeam).teamMembers().stream()
                 .filter(teamMember -> teamMember.playerId().equals(targetId))
                 .findFirst()
                 .orElse(null);
@@ -290,7 +287,7 @@ public final class TeamManager {
             if (teamMemberKickEvent.isCancelled()) return RavenSMPTeamActionStatus.CANCELED;
         }
 
-        val oldLeaderUsername = playerTeam.teamLeader().username();
+        val oldLeaderUsername = ((SMPTeam) playerTeam).teamLeader().username();
         val newLeaderUsername = targetPlayer.getName();
 
         playerTeam.sendLocalizedMessage(
@@ -305,6 +302,9 @@ public final class TeamManager {
         ((SMPTeam) playerTeam).teamLeader(newLeader);
         this.teamDao.update((SMPTeam) playerTeam);
 
+        // Update index with new leader
+        teamsByPlayerId.put(playerId, (SMPTeam) playerTeam);
+
         return RavenSMPTeamActionStatus.SUCCESSFUL;
     }
 
@@ -318,7 +318,7 @@ public final class TeamManager {
         if (this.teamHomeTeleportCooldown.contains(playerId))
             return RavenSMPTeamActionStatus.PLAYER_TEAM_HOME_TELEPORTATION_COOLDOWN;
 
-        val homeLocation = playerTeam.teamOptions().homeLocation();
+        val homeLocation = ((SMPTeam) playerTeam).teamOptions().homeLocation();
         if (homeLocation == null) return RavenSMPTeamActionStatus.PLAYER_TEAM_HOME_NOT_EXIST;
 
         this.teamHomeTeleportCooldown.add(
@@ -332,11 +332,9 @@ public final class TeamManager {
     }
 
     @Contract(pure = true)
-    public @Nullable RavenSMPTeam findTeamByPlayerId(@NotNull UUID playerId) {
-        return this.teams.stream()
-                .filter(team -> team.isMember(playerId))
-                .findFirst()
-                .orElse(null);
+    public @Nullable SMPTeam findTeamByPlayerId(@NotNull UUID playerId) {
+        // Optimized: O(1) lookup instead of O(n) stream filter
+        return teamsByPlayerId.get(playerId);
     }
 
     @Contract(pure = true)
@@ -345,6 +343,34 @@ public final class TeamManager {
                 .filter(team -> team.teamId().equalsIgnoreCase(teamId))
                 .findFirst()
                 .orElse(null);
+    }
+
+    // Helper method to rebuild the index when team membership changes
+    private void rebuildIndex() {
+        teams.forEach(team -> {
+            SMPTeam castTeam = (SMPTeam) team;
+            for (RavenSMPTeamMember member : castTeam.teamMembers()) {
+                SMPTeamMember castMember = (SMPTeamMember) member;
+                teamsByPlayerId.put(castMember.playerId(), castTeam);
+            }
+        });
+    }
+
+    public void updateTeamMemberUsername(@NotNull UUID playerId, @NotNull String username) {
+        val playerTeam = findTeamByPlayerId(playerId);
+        if (playerTeam == null) return;
+
+        // Optimized: Direct map access instead of nested stream operations
+        ((SMPTeam) playerTeam).teamMembers().stream()
+                .filter(teamMember -> teamMember.playerId().equals(playerId))
+                .findFirst()
+                .ifPresent(member -> {
+                    SMPTeamMember castMember = (SMPTeamMember) member;
+                    if (!castMember.username().equalsIgnoreCase(username)) {
+                        castMember.username(username);
+                        this.teamDao.update((SMPTeam) playerTeam);
+                    }
+                });
     }
 
 }
