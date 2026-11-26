@@ -24,5 +24,5 @@ dependencies {
 
     compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
-    compileOnly("org.mongodb:mongodb-driver-sync:5.14.0")
+    compileOnly("org.mongodb:mongodb-driver-sync:5.15.0")
 }
